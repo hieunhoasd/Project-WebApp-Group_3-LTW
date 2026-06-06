@@ -1,38 +1,49 @@
-import "./header.css"
+import "./header.css";
 
 function Header() {
   return (
-     <div className="container">
-        <header>
-            <div className="search">
-                <form>
-                    <input type="text" placeholder="Tìm kiếm sản phẩm" />
-                    <button type="submit">
-                        <img src="././src/assets/images/a.png" alt="Tìm kiếm" />
-                    </button>
-                </form>
-                <form>
-                <div>
-                    <button type="button" className="cart-button">
-                            <img src="././src/assets/images/b.png" alt="Giỏ hàng" />
-                    </button>
-                    <button type="button" className="account-button">
-                            <img src="././src/assets/images/c.png" alt="Đăng kí" />
-                    </button>
-                </div>
-                </form>
-            </div>  
-        </header>
+    <div className="container">
+      <header>
+        <div className="logo">
+          <h1>VELORA</h1>
+          <p>SPORT • STYLE • YOU</p>
+        </div>
+
         <nav>
-            <ul>
-                <li><a href="#">Trang chủ</a></li>
-                <li><a href="#">Sản phẩm</a></li>
-                <li><a href="#">Giới thiệu</a></li>
-                <li><a href="#">Liên hệ</a></li>
-            </ul>
+          <ul className="main-menu">
+            <li><a href="#">Trang chủ</a></li>
+            <li className="dropdown">
+              <a href="#">Sản phẩm ▾</a>
+              <ul className="dropdown-menu">
+                <li><a href="#">Áo</a></li>
+                <li><a href="#">Quần</a></li>
+                <li><a href="#">Giày</a></li>
+              </ul>
+            </li>            
+            <li><a href="#">Giới thiệu</a></li>
+            <li><a href="#">Liên hệ</a></li>
+          </ul>
         </nav>
-     </div>
-        
+
+        <div className="search">
+          <form>
+            <input type="text" placeholder="Tìm kiếm..." />
+
+            <button type="submit" title="Tìm kiếm">
+              <img src="./src/assets/images/a.png" alt="Tìm kiếm" />
+            </button>
+
+            <button type="button" title="Giỏ hàng">
+              <img src="./src/assets/images/b.png" alt="Giỏ hàng" />
+            </button>
+
+            <button type="button" title="Tài khoản">
+              <img src="./src/assets/images/c.png" alt="Tài khoản" />
+            </button>
+          </form>
+        </div>
+      </header>
+    </div>
   );
 }
 
