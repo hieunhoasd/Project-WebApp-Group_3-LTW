@@ -8,12 +8,12 @@
 /* --- Toàn bộ khu vực Banner --- */
 .hero-banner {
   width: 100%;
-  min-height: 85vh; 
+  min-height: 55vh; 
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 0;
-  background: #060608; 
+  padding: 30px 0;
+  background: #0f0f0f; /* Màu nền tối để làm nổi bật hiệu ứng neon */
 }
 
 /* Container chia cột tỉ lệ chuẩn */
