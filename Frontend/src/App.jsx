@@ -1,12 +1,13 @@
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
-import Home from "./pages/Home/Home";
+import { Routes, Route } from "react-router-dom";
+import Header from "./components/Header/header";
+import Footer from "./components/Footer/footer";
+import Home from "./pages/Home/home";
+import Login from "./pages/Login/login";
 import "./App.css";
 
-function App() {
+const HomePage = () => {
   return (
     <>
-      <Header />
       <section className="hero-banner">
         <div className="hero-container">
           
@@ -37,7 +38,7 @@ function App() {
           {/* Khối bên phải: Hình ảnh */}
           <div className="hero-image-wrapper">
             <img
-              src="./src/assets/images/banner.png"
+              src="/src/assets/images/banner.png"
               alt="Velora Banner"
               className="featured-image"
             />
@@ -46,6 +47,18 @@ function App() {
         </div>
       </section>
       <Home />
+    </>
+  );
+};
+
+function App() {
+  return (
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
       <Footer />
     </>
   );

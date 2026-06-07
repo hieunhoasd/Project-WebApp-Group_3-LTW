@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import "./header.css";
 
 function Header() {
+  const navigate = useNavigate();
+
   return (
     <div className="container">
       <header>
@@ -32,15 +35,15 @@ function Header() {
             <input type="text" placeholder="Tìm kiếm..." />
 
             <button type="submit" title="Tìm kiếm">
-              <img src="./src/assets/images/a.png" alt="Tìm kiếm" />
+              <img src="/src/assets/images/a.png" alt="Tìm kiếm" />
             </button>
 
             <button type="button" title="Giỏ hàng">
-              <img src="./src/assets/images/b.png" alt="Giỏ hàng" />
+              <img src="/src/assets/images/b.png" alt="Giỏ hàng" />
             </button>
 
-            <button type="button" title="Tài khoản">
-              <img src="./src/assets/images/c.png" alt="Tài khoản" />
+            <button type="button" title="Tài khoản" onClick={() => navigate("/login")}>
+              <img src="/src/assets/images/c.png" alt="Tài khoản" />
             </button>
           </form>
         </div>
