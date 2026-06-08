@@ -18,10 +18,9 @@ function Header() {
             <li className="dropdown">
               <a href="#">Sản phẩm ▾</a>
               <ul className="dropdown-menu">
-                <li><a href="#">Áo dành cho nam</a></li>
-                <li><a href="#">Áo dành cho nữ</a></li>
+                <li><a href="#">Quần áo dành cho nam</a></li>
+                <li><a href="#">Quần áo dành cho nữ</a></li>
                 <li><a href="#">Áo khoác</a></li>
-                <li><a href="#">Quần unisex</a></li>
                 <li><a href="#">Giày</a></li>
               </ul>
             </li>            
