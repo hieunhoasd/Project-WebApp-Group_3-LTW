@@ -9,7 +9,7 @@ function Footer() {
           <h3 className="footer_heading">CHĂM SÓC KHÁCH HÀNG</h3>
           <ul className="footer_list">
             <li><a href="#" className="footer-item__link">Trung Tâm Trợ Giúp</a></li>
-            <li><a href="#" className="footer-item__link">Velora Mall</a></li>
+            <li><a href="#" className="footer-item__link">Velora Store</a></li>
             <li><a href="#" className="footer-item__link">Hướng dẫn mua hàng</a></li>
           </ul>
         </div>
