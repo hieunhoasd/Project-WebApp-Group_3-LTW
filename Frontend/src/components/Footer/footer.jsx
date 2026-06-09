@@ -36,9 +36,15 @@ function Footer() {
         <div className="footer-column">
           <h3 className="footer_heading">THEO DÕI</h3>
           <ul className="footer_list">
-            <li><a href="#" className="footer-item__link">Facebook</a></li>
-            <li><a href="#" className="footer-item__link">Instagram</a></li>
-            <li><a href="#" className="footer-item__link">LinkedIn</a></li>
+            <li><a href="#" className="footer-item__link">
+              <img src="/src/assets/images/fb.png" alt="Fb"/>
+              Facebook</a></li>
+            <li><a href="#" className="footer-item__link">
+              <img src="/src/assets/images/instagram.png" alt="ins"/>
+              Instagram</a></li>
+            <li><a href="#" className="footer-item__link">
+              <img src="/src/assets/images/linkedin.png" alt="linked"/>
+              LinkedIn</a></li>
           </ul>
         </div>
 

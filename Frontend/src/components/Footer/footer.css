@@ -39,8 +39,26 @@
     color: #d1d5db;
     font-size: 15px;
     transition: 0.3s;
+    
+    /* MỚI BỔ SUNG: Giúp icon và chữ căn đều hàng theo chiều dọc */
+    display: inline-flex;
+    align-items: center;
 }
 
 .footer-item__link:hover {
     color: #a855f7;
+}
+
+.footer-item__link img {
+    width: 24px;        
+    height: 24px;         
+    object-fit: contain;  
+    margin-right: 12px;  
+    border-radius: 4px;  
+    transition: transform 0.3s ease; 
+}
+
+
+.footer-item__link:hover img {
+    transform: scale(1.1);
 }
