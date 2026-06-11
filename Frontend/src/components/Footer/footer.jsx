@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./footer.css";
 
 function Footer() {
@@ -14,7 +15,7 @@ function Footer() {
           </ul>
         </div>
 
-        <div className="footer-column">
+        <div className="footer-column" id="thong-tin-cua-hang">
           <h3 className="footer_heading">THÔNG TIN CỬA HÀNG</h3>
           <ul className="footer_list">
             <li>
@@ -24,20 +25,21 @@ function Footer() {
             </li>
             <li>
               <a href="javascript:void(0)" className="footer-item__link">
-                Số điện thoại:0352.456.789
+                Số điện thoại: 0352.456.789
               </a>
             </li>
             <li><a href="javascript:void(0)" className="footer-item__link">Điều khoản</a></li>
           </ul>
         </div>
 
+        {/* CẬP NHẬT CỘT DANH MỤC TẠI ĐÂY */}
         <div className="footer-column">
           <h3 className="footer_heading">DANH MỤC</h3>
           <ul className="footer_list">
-            <li><a href="javascript:void(0)" className="footer-item__link">Quần áo nam</a></li>
-            <li><a href="javascript:void(0)" className="footer-item__link">Quần áo nữ</a></li>
-            <li><a href="javascript:void(0)" className="footer-item__link">Áo khoác</a></li>
-            <li><a href="javascript:void(0)" className="footer-item__link">Giày</a></li>
+            <li><Link to="/products#quan-ao-nam" className="footer-item__link">Quần áo nam</Link></li>
+            <li><Link to="/products#quan-ao-nu" className="footer-item__link">Quần áo nữ</Link></li>
+            <li><Link to="/products#ao-khoac" className="footer-item__link">Áo khoác</Link></li>
+            <li><Link to="/products#giay" className="footer-item__link">Giày</Link></li>
           </ul>
         </div>
 
@@ -46,20 +48,17 @@ function Footer() {
           <ul className="footer_list">
             <li>
               <a href="javascript:void(0)" className="footer-item__link">
-                <img src="/src/assets/images/fb.png" alt="Fb"/>
-                Facebook
+                <img src="/src/assets/images/fb.png" alt="Fb"/> Facebook
               </a>
             </li>
             <li>
               <a href="javascript:void(0)" className="footer-item__link">
-                <img src="/src/assets/images/instagram.png" alt="ins"/>
-                Instagram
+                <img src="/src/assets/images/instagram.png" alt="ins"/> Instagram
               </a>
             </li>
             <li>
               <a href="javascript:void(0)" className="footer-item__link">
-                <img src="/src/assets/images/linkedin.png" alt="linked"/>
-                LinkedIn
+                <img src="/src/assets/images/linkedin.png" alt="linked"/> LinkedIn
               </a>
             </li>
           </ul>

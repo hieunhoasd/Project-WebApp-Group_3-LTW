@@ -529,3 +529,38 @@
   }
 }
 
+.home-section {
+  scroll-margin-top: 80px;
+  padding-bottom: 60px;
+}
+
+.contact-section-box {
+  background-color: #f9f9f9;
+  padding-top: 40px;
+  border-top: 1px solid #eee;
+  margin-top: 40px;
+}
+
+.contact-content-mock {
+  display: flex;
+  justify-content: space-around;
+  max-width: 1200px;
+  margin: 30px auto 0 auto;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.contact-info-item {
+  text-align: center;
+  min-width: 250px;
+}
+
+.contact-info-item h4 {
+  margin-bottom: 8px;
+  color: #222;
+  font-size: 1.1rem;
+}
+
+.contact-info-item p {
+  color: #666;
+}
