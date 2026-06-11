@@ -1,7 +1,8 @@
-<img width="286" height="860" alt="image" src="https://github.com/user-attachments/assets/fccffe64-9083-47b9-92e5-2700efdfe650" />﻿# Project-WebApp-Group_3-LTW
+﻿# Project-WebApp-Group_3-LTW
 
 # Digram cho các chức năng
 
 - D.G: https://drive.google.com/file/d/1MiQifyrMPVASLhx9QNFj24IZqrMlnBOi/view?usp=sharing
 # Thông tin về cấu trúc file và Src
-<img width="286" height="860" alt="image" src="https://github.com/user-attachments/assets/31a04a35-c962-49f9-a6ab-1033c56bc19e" />
+<img width="200" height="800" alt="image" src="https://github.com/user-attachments/assets/31a04a35-c962-49f9-a6ab-1033c56bc19e" />
+
