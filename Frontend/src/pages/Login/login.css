@@ -1,0 +1,134 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #0b0b0c;
+  /* Nền tối đồng bộ với trang chủ Velora */
+  font-family: sans-serif;
+  color: #fff;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+  padding: 30px;
+  text-align: center;
+  border-radius: 12px;
+  /* Hiệu ứng đổ bóng neon tím nhẹ sang trọng */
+  box-shadow: 0 10px 40px rgba(138, 43, 226, 0.12);
+}
+
+/* Tiêu đề Velora với gradient màu Tím - Xanh */
+.auth-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 6px;
+  background: linear-gradient(to right, #a855f7, #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.auth-subtitle {
+  color: #aaa;
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+
+/* Định hình layout chạy dọc, các phần tử cách đều nhau */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input-group {
+  width: 100%;
+}
+
+/* Ô nhập liệu tối giản: Viền mờ trong suốt, chữ căn giữa */
+.input-group input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 15px;
+  text-align: center;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+/* Màu chữ của placeholder chìm nhẹ xuống nền */
+.input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Khi click vào ô nhập thì sáng viền lên màu tím thương hiệu */
+.input-group input:focus {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: #a855f7;
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
+}
+
+/* Nút bấm Đăng nhập chiếm trọn chiều rộng, màu tím gradient nguyên bản */
+.auth-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(to right, #7c3aed, #4f46e5);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: all 0.3s ease;
+}
+
+.auth-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
+}
+
+.auth-toggle {
+  margin-top: 26px;
+  font-size: 14px;
+  color: #aaa;
+}
+
+.auth-toggle span {
+  color: #a855f7;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.auth-toggle span:hover {
+  color: #c084fc;
+}
+
+/* Khung báo lỗi chung màu đỏ neon dịu mắt */
+.server-error-box {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 20px;
+  text-align: center;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  font-weight: 500;
+}
+
+/* Chữ hiển thị lỗi validation dưới ô input */
+.error-message {
+  color: #ef4444;
+  font-size: 12px;
+  text-align: left;
+  margin: 4px 0 0 8px;
+  font-weight: 500;
+  display: block;
+}

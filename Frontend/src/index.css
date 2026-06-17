@@ -1,0 +1,23 @@
+/* Xóa bỏ mọi rào cản mặc định của trình duyệt và Vite */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: #09090b; /* Màu nền tối đồng bộ với web của bạn */
+}
+
+/* Ép thẻ root chứa app React phải bung full màn hình */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  max-width: none; /* Phá vỡ giới hạn width mặc định của Vite */
+}
