@@ -1,65 +1,83 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import "./products.css"; // File CSS của trang sản phẩm bạn đang dùng
+import axios from "axios";
+import "./products.css";
 
 function Products() {
+  const [products, setProducts] = useState([]);
   const location = useLocation();
 
   useEffect(() => {
-    // Nếu trên URL có hash (ví dụ: #ao-khoac)
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/products`);
+        
+        // In ra console để kiểm tra dữ liệu
+        console.log("Dữ liệu API Products:", response.data);
+
+        let data = response.data?.data || response.data;
+
+        // Chốt chặn an toàn
+        if (!Array.isArray(data)) {
+          console.warn("Dữ liệu trả về không phải là mảng!", data);
+          data = [];
+        }
+
+        setProducts(data);
+      } catch (error) {
+        console.error("Lỗi lấy sản phẩm:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
     if (location.hash) {
-      // Bỏ dấu '#' đi để lấy đúng tên ID
-      const id = location.hash.replace("#", ""); 
+      const id = location.hash.replace("#", "");
       const element = document.getElementById(id);
-      
+
       if (element) {
-        // Đợi một chút ngắn để đảm bảo giao diện đã render xong hoàn toàn
         setTimeout(() => {
-          element.scrollIntoView({ behavior: "smooth", block: "start" });
+          element.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
         }, 100);
       }
     }
-  }, [location]); // Chạy lại mỗi khi URL thay đổi
+  }, [location]);
 
   return (
     <div className="products-container">
       <h1 className="page-title">DANH SÁCH SẢN PHẨM</h1>
 
-      {/* 1. KHU VỰC QUẦN ÁO NAM */}
-      <section id="quan-ao-nam" className="product-section">
-        <h2>Quần áo dành cho Nam</h2>
-        <div className="product-list-mock">
-          {/* Map danh sách hoặc render sản phẩm Nam của bạn ở đây */}
-          <p>Danh sách sản phẩm Nam...</p>
-        </div>
-      </section>
+      <div className="product-grid">
+        {/* Thêm check an toàn trước khi map */}
+        {Array.isArray(products) && products.map((product) => (
+          <div key={product.id} className="product-card" id={`product-${product.id}`}>
+            <img
+              src={`${import.meta.env.VITE_STORAGE_URL}${product.image}`}
+              alt={product.name}
+              className="product-image"
+            />
 
-      {/* 2. KHU VỰC QUẦN ÁO NỮ */}
-      <section id="quan-ao-nu" className="product-section">
-        <h2>Quần áo dành cho Nữ</h2>
-        <div className="product-list-mock">
-          {/* Map danh sách sản phẩm Nữ ở đây */}
-          <p>Danh sách sản phẩm Nữ...</p>
-        </div>
-      </section>
+            <div className="product-info">
+              <h3>{product.name}</h3>
 
-      {/* 3. KHU VỰC ÁO KHOÁC */}
-      <section id="ao-khoac" className="product-section">
-        <h2>Áo Khoác</h2>
-        <div className="product-list-mock">
-          {/* Map danh sách Áo khoác ở đây */}
-          <p>Danh sách Áo khoác...</p>
-        </div>
-      </section>
+              <p>Danh mục: {product.category_name}</p>
 
-      {/* 4. KHU VỰC GIÀY */}
-      <section id="giay" className="product-section">
-        <h2>Giày Thể Thao</h2>
-        <div className="product-list-mock">
-          {/* Map danh sách Giày ở đây */}
-          <p>Danh sách Giày...</p>
-        </div>
-      </section>
+              <p>
+                Giá: {Number(product.price).toLocaleString("vi-VN")}₫
+              </p>
+
+              <p>Số lượng: {product.quantity}</p>
+
+              <p>{product.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

@@ -4,7 +4,11 @@ import Footer from "./components/Footer/footer";
 import Home from "./pages/Home/home";
 import Login from "./pages/Login/login";
 import Products from "./pages/Products/products"; 
+import Userprofile from "./pages/Userprofile/userprofile";
 import "./App.css";
+
+
+
 
 const HomePage = () => {
   return (
@@ -59,9 +63,8 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
-        
-        {/* CHÈN THÊM DÒNG NÀY ĐỂ SỬA LỖI ĐỊNH TUYẾN PRODUCTS */}
         <Route path="/products" element={<Products />} />
+        <Route path="/profile" element={<Userprofile />} />
       </Routes>
       <Footer />
     </>
