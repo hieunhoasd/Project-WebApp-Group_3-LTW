@@ -1,23 +1,22 @@
-/* Xóa bỏ mọi rào cản mặc định của trình duyệt và Vite */
+/* src/index.css */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body {
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9fafb;
   width: 100%;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  background: #09090b; /* Màu nền tối đồng bộ với web của bạn */
+  overflow-x: hidden;
+  /* Tránh thanh cuộn ngang */
 }
 
-/* Ép thẻ root chứa app React phải bung full màn hình */
+/* Thẻ root của React phải chiếm 100% chiều rộng */
 #root {
   width: 100%;
   min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  max-width: none; /* Phá vỡ giới hạn width mặc định của Vite */
+  display: block;
+  /* Ghi đè cái flex mặc định của Vite */
 }

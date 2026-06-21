@@ -1,0 +1,174 @@
+.profile-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    gap: 30px;
+    min-height: 70vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 👤 Sidebar bên trái */
+.profile-sidebar {
+    flex: 1;
+    background-color: #fcfcfc;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    padding: 24px;
+    height: fit-content;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.user-avatar-section {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eaeaea;
+    margin-bottom: 20px;
+}
+
+.profile-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #333;
+    /* Màu đen khỏe khoắn phong cách Velora */
+    padding: 3px;
+    margin-bottom: 12px;
+}
+
+.user-avatar-section h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #222;
+    font-weight: 600;
+}
+
+.user-role {
+    font-size: 13px;
+    color: #777;
+    margin: 4px 0 0 0;
+}
+
+.profile-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu-item {
+    width: 100%;
+    padding: 12px 16px;
+    text-align: left;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.menu-item:hover {
+    background-color: #f1f1f1;
+    color: #000;
+}
+
+.menu-item.active {
+    background-color: #000;
+    /* Màu nền đen cá tính */
+    color: #fff;
+    font-weight: 600;
+}
+
+/* 📝 Vùng nội dung hiển thị bên phải */
+.profile-content {
+    flex: 3;
+    background-color: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.tab-panel h2 {
+    margin: 0 0 6px 0;
+    font-size: 24px;
+    color: #111;
+    font-weight: 600;
+}
+
+.panel-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 24px;
+}
+
+/* 📄 Cấu trúc Biểu mẫu Form */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 650px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 11px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+    background-color: #fff;
+    color: #333;
+    transition: border-color 0.2s;
+}
+
+/* Định dạng các ô chỉ đọc (Readonly / Disabled) */
+.disabled-input {
+    background-color: #f5f5f5 !important;
+    color: #666 !important;
+    border-color: #e0e0e0 !important;
+    cursor: not-allowed;
+}
+
+/* ⏳ Màn hình Loading và Error */
+.loading-box,
+.error-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* ✨ Hiệu ứng chuyển tab mượt mà */
+.animate-fade {
+    animation: profileFadeIn 0.3s ease-out;
+}
+
+@keyframes profileFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

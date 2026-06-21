@@ -24,7 +24,14 @@ function Login() {
       });
 
       if (response.data.code === 200) {
-        localStorage.setItem('user', JSON.stringify(response.data.data));
+        // 🔥 LƯU TOKEN VÀO LOCALSTORAGE ĐỂ CHỨNG THỰC CHO CÁC API KHÁC
+        if (response.data.token) {
+          localStorage.setItem('user_token', response.data.token);
+        }
+
+        // Vẫn lưu thông tin user cơ bản để hiển thị nhanh (nếu cần)
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+
         navigate('/');
         window.location.reload();
       }

@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Hash;
 
 class ApiController extends Controller
 {
-    // ==========================================
-    // 1. CHỨC NĂNG AUTHENTICATION (USER)
-    // ==========================================
-
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -76,8 +72,8 @@ class ApiController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email'    => 'required|string|email',
-            'password' => 'required|string',
+            'email' => 'required|string|email',
+            'password' => 'required|string|min:6',
         ]);
 
         if ($validator->fails()) {
@@ -97,17 +93,32 @@ class ApiController extends Controller
             ], 401);
         }
 
+        $token = base64_encode($user->email . '_' . time());
+
         return response()->json([
             'code' => 200,
             'message' => 'Đăng nhập thành công!',
-            'data' => [
-                'id'        => $user->id,
+            'token' => $token, // 🌟 Gửi token này về cho React
+            'user' => [
+                'id' => $user->id,
                 'firstname' => $user->firstname,
-                'lastname'  => $user->lastname,
-                'email'     => $user->email,
-                'phone'     => $user->phone,
-                'role'      => $user->role,
+                'lastname' => $user->lastname,
+                'email' => $user->email
             ]
+        ], 200);
+    }
+
+    public function logout(Request $request)
+    {
+        // Hủy bỏ toàn bộ dữ liệu session hiện tại
+        $request->session()->invalidate();
+
+        // Tạo lại token bảo vệ CSRF (khuyên dùng khi làm việc với Session)
+        $request->session()->regenerateToken();
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'Đăng xuất thành công!'
         ], 200);
     }
 
@@ -118,7 +129,6 @@ class ApiController extends Controller
     public function getProducts()
     {
         try {
-            // Lấy danh sách sản phẩm kết hợp tên danh mục một cách rõ ràng
             $products = DB::table('products')
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->select(
@@ -151,7 +161,6 @@ class ApiController extends Controller
     // chiet san pham
     public function show($id)
     {
-        // Khớp chuẩn với cấu trúc bảng products (đã bỏ sale_price)
         $product = DB::table('products')
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->select(
@@ -337,5 +346,44 @@ class ApiController extends Controller
             DB::rollBack();
             return response()->json(['code' => 500, 'message' => 'Lỗi xử lý đơn hàng: ' . $e->getMessage()], 500);
         }
+    }
+
+    public function getUserProfile(Request $request)
+    {
+        // Lấy token từ Header do React gửi lên
+        $token = $request->header('Authorization');
+
+        if (!$token) {
+            return response()->json([
+                'code' => 401,
+                'message' => 'Bạn chưa đăng nhập!'
+            ], 401);
+        }
+
+        // Giải mã token để lấy email
+        $decrypted = base64_decode($token);
+        $email = explode('_', $decrypted)[0] ?? null;
+
+        // Tìm user bằng email
+        $user = DB::table('users')->where('email', $email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'code' => 404,
+                'message' => 'Người dùng không tồn tại hoặc phiên đăng nhập hết hạn!'
+            ], 404);
+        }
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'Tải thông tin thành công!',
+            'user' => [
+                'id' => $user->id,
+                'firstname' => $user->firstname,
+                'lastname' => $user->lastname,
+                'email' => $user->email,
+                'phone' => $user->phone
+            ]
+        ], 200);
     }
 }

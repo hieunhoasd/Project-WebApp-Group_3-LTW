@@ -1,177 +1,22 @@
-/* --- Reset cơ bản --- */
+/* src/index.css */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* --- Toàn bộ khu vực Banner --- */
-.hero-banner {
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9fafb;
   width: 100%;
-  min-height: 55vh; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 30px 0;
-  background: #0f0f0f; /* Màu nền tối để làm nổi bật hiệu ứng neon */
+  overflow-x: hidden;
+  /* Tránh thanh cuộn ngang */
 }
 
-/* Container chia cột tỉ lệ chuẩn */
-.hero-container {
+/* Thẻ root của React phải chiếm 100% chiều rộng */
+#root {
   width: 100%;
-  max-width: 1250px;
-  display: grid;
-  grid-template-columns: 1fr 1.2fr; 
-  gap: 50px;
-  align-items: center;
-  padding: 0 40px;
-}
-
-/* --- Khối nội dung chữ --- */
-.hero-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-/* HỘP KHUNG VIỀN NEON (Ôm sát cụm chữ chính) */
-.glow-text-box {
-  position: relative;
-  padding: 25px 45px; /* Điều chỉnh để khung vừa vặn */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 20px;
-  
-  /* Tạo đường viền neon phát sáng */
-  border: 2px solid rgba(154, 52, 235, 0.9);
-  box-shadow: 
-    0 0 20px rgba(154, 52, 235, 0.5),
-    inset 0 0 15px rgba(154, 52, 235, 0.3);
-}
-
-/* Đường viền kép mờ mảnh chạy vòng ngoài */
-.glow-text-box::after {
-  content: '';
-  position: absolute;
-  top: -7px;
-  left: -7px;
-  right: -7px;
-  bottom: -7px;
-  border: 1px solid rgba(154, 52, 235, 0.4);
-  border-radius: 26px;
-  pointer-events: none;
-}
-
-/* Ánh sáng tím mờ lan tỏa làm nền phía sau */
-.glow-text-box::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(154, 52, 235, 0.25) 0%, rgba(0,0,0,0) 70%);
-  filter: blur(35px);
-  z-index: -1;
-  pointer-events: none;
-}
-
-/* Tiêu đề chính */
-.hero-content .main-title {
-  font-size: 60px; 
-  font-weight: 900;
-  line-height: 0.9; /* Ép chữ khít lại */
-  color: #ffffff;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin: 0;
-}
-
-/* Tiêu đề phụ SPORT STYLE */
-.hero-content .sub-heading {
-  font-size: 22px;
-  font-weight: 700;
-  color: #ffffff; /* Sửa thành màu trắng giống ảnh mẫu */
-  margin-top: 15px;
-  margin-bottom: 0;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-}
-
-/* Đoạn mô tả (Nằm bên ngoài hộp, cách lề trên/dưới chuẩn) */
-.hero-content .description {
-  font-size: 16px;
-  color: #a1a1aa;
-  max-width: 400px;
-  line-height: 1.6;
-  margin-top: 35px; /* Đẩy cách xa khung Neon */
-  margin-bottom: 35px; /* Đẩy cách xa nút bấm */
-}
-
-/* --- Khối nút bấm --- */
-.hero-actions {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  width: 100%;
-}
-
-.hero-actions button {
-  width: 160px;
-  padding: 13px 0; 
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 15px;
-  cursor: pointer;
-  white-space: nowrap; 
-  transition: all 0.3s ease;
-}
-
-/* Nút Mua ngay */
-.hero-actions .btn-primary {
-  background: linear-gradient(135deg, rgba(109, 40, 217, 0.6), rgba(147, 51, 234, 0.5));
-  color: #ffffff;
-  border: 1px solid rgba(168, 85, 247, 0.7);
-  box-shadow: 0 0 15px rgba(147, 51, 234, 0.5);
-}
-
-.hero-actions .btn-primary:hover {
-  background: linear-gradient(135deg, rgba(109, 40, 217, 0.8), rgba(147, 51, 234, 0.7));
-  transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(147, 51, 234, 0.7);
-}
-
-/* Nút Xem sản phẩm */
-.hero-actions .btn-secondary {
-  background: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
-  border: 1px solid rgba(168, 85, 247, 0.6);
-  box-shadow: 0 0 15px rgba(147, 51, 234, 0.2);
-}
-
-.hero-actions .btn-secondary:hover {
-  background: rgba(168, 85, 247, 0.15);
-  transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(147, 51, 234, 0.5);
-}
-
-/* --- Khối xử lý hình ảnh lớn --- */
-.hero-image-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.featured-image {
-  width: 100%;
-  max-width: 650px; 
-  height: auto;
-  object-fit: cover;
-  border-radius: 20px; 
-  border: 1px solid rgba(168, 85, 247, 0.2);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  min-height: 100vh;
+  display: block;
+  /* Ghi đè cái flex mặc định của Vite */
 }
