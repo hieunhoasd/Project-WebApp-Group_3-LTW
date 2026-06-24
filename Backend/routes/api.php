@@ -17,3 +17,4 @@ Route::get('/admin/categories', [ApiController::class, 'getAdminCategories']);
 Route::post('/checkout', [ApiController::class, 'processCheckout']);
 // Lấy danh sách sản phẩm thuộc một danh mục cụ thể
 Route::get('/categories/{id}/products', [ApiController::class, 'getProductsByCategory']);
+Route::post('/orders', [ApiController::class, 'checkout']);

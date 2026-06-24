@@ -288,79 +288,79 @@ class ApiController extends Controller
 
     public function checkout(Request $request)
     {
+        // 1. Validate dữ liệu đầu vào
         $validator = Validator::make($request->all(), [
             'user_id'          => 'required|exists:users,id',
             'shipping_address' => 'required|string',
             'phone_receiver'   => 'required|string',
+            'items'            => 'required|array',
+            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.quantity'   => 'required|integer|min:1',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['code' => 400, 'errors' => $validator->errors()], 400);
         }
 
-        // 1. Lấy dữ liệu giỏ hàng
-        $cart = DB::table('carts')->where('user_id', $request->user_id)->first();
-        if (!$cart) {
-            return response()->json(['code' => 400, 'message' => 'Giỏ hàng trống!'], 400);
-        }
-
-        $cartItems = DB::table('cart_details')
-            ->join('products', 'cart_details.product_id', '=', 'products.id')
-            ->select('cart_details.*', 'products.price', 'products.quantity as stock')
-            ->where('cart_id', $cart->id)
-            ->get();
-
-        if ($cartItems->isEmpty()) {
-            return response()->json(['code' => 400, 'message' => 'Giỏ hàng không có sản phẩm để thanh toán!'], 400);
-        }
-
-        // 2. Tính tổng tiền và kiểm tra kho một lần nữa trước khi bấm mua
+        $cartItems = $request->items;
         $totalPrice = 0;
+
+        // 2. Kiểm tra kho và tính tổng tiền thực tế từ DB (tránh Client sửa giá gian lận)
         foreach ($cartItems as $item) {
-            if ($item->stock < $item->quantity) {
-                return response()->json(['code' => 400, 'message' => "Sản phẩm mã {$item->product_id} không đủ hàng!"], 400);
+            $product = DB::table('products')->where('id', $item['product_id'])->first();
+
+            if (!$product) {
+                return response()->json(['code' => 400, 'message' => "Sản phẩm mã {$item['product_id']} không tồn tại!"], 400);
             }
-            $totalPrice += $item->price * $item->quantity;
+
+            if ($product->quantity < $item['quantity']) {
+                return response()->json(['code' => 400, 'message' => "Sản phẩm '{$product->name}' không đủ hàng!"], 400);
+            }
+
+            $totalPrice += $product->price * $item['quantity'];
         }
 
-        // Dùng Database Transaction để đảo bảo không bị lỗi mất dữ liệu giữa chừng
+        // 3. Tiến hành lưu đơn hàng bằng Transaction
         DB::beginTransaction();
         try {
             $now = now();
-            // 3. Tạo đơn hàng (Orders)
+
+            // Tạo Đơn hàng
             $orderId = DB::table('orders')->insertGetId([
                 'user_id'          => $request->user_id,
                 'total_price'      => $totalPrice,
-                'status'           => 'pending', // Mặc định theo migration của bạn
+                'status'           => 'pending',
                 'shipping_address' => $request->shipping_address,
                 'phone_receiver'   => $request->phone_receiver,
+                'note'             => $request->note ?? null,
                 'created_at'       => $now,
                 'updated_at'       => $now,
             ]);
 
-            // 4. Tạo chi tiết đơn hàng & Trừ kho hàng
+            // Tạo chi tiết đơn hàng & Trừ kho
             foreach ($cartItems as $item) {
+                $product = DB::table('products')->where('id', $item['product_id'])->first();
+
                 DB::table('order_details')->insert([
                     'order_id'   => $orderId,
-                    'product_id' => $item->product_id,
-                    'quantity'   => $item->quantity,
-                    'unit_price' => $item->price, // Lưu giá tại thời điểm mua chuẩn cấu trúc migration
+                    'product_id' => $item['product_id'],
+                    'quantity'   => $item['quantity'],
+                    'unit_price' => $product->price,
                     'created_at' => $now,
                     'updated_at' => $now,
                 ]);
 
-                // Trừ số lượng tồn kho sản phẩm
-                DB::table('products')->where('id', $item->product_id)->decrement('quantity', $item->quantity);
+                // Trừ tồn kho
+                DB::table('products')->where('id', $item['product_id'])->decrement('quantity', $item['quantity']);
             }
 
-            // 5. Xóa sạch giỏ hàng sau khi đã lên đơn thành công
-            DB::table('cart_details')->where('cart_id', $cart->id)->delete();
-
             DB::commit();
-            return response()->json(['code' => 201, 'message' => 'Đặt hàng thành công!', 'order_id' => $orderId], 201);
+
+            // Trả về code 200 để Front-end nhận diện thành công đơn giản
+            return response()->json(['code' => 200, 'message' => 'Đặt hàng thành công!', 'order_id' => $orderId], 200);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['code' => 500, 'message' => 'Lỗi xử lý đơn hàng: ' . $e->getMessage()], 500);
+            return response()->json(['code' => 500, 'message' => 'Lỗi hệ thống: ' . $e->getMessage()], 500);
         }
     }
 

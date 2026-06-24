@@ -11,7 +11,7 @@ import CategoryPage from "./pages/Category/CategoryPage";
 import AdminPage from "./pages/Admin/AdminPage";
 import AdminRoute from "./components/AdminRoute";
 import NotFound from "./pages/NotFound/NotFound";
-
+import CheckoutPage from './pages/Checkout/CheckoutPage';
 import "./App.css";
 
 const MainLayout = ({ children }) => {
@@ -36,6 +36,7 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/product/:id" element={<ProductDetailPage />} />
       <Route path="/cart" element={<CartPage />} />
+      <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="/user-profile" element={
         <MainLayout>
           <UserProfile />

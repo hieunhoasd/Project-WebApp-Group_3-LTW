@@ -4,12 +4,13 @@ import { useCart } from '../../context/CartContext';
 import Header from '../../components/Header/header';
 import Footer from '../../components/Footer/footer';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import './CartPage.css';
 
 const CartPage = () => {
     // Lấy dữ liệu và các hàm xử lý từ Context ra
     const { cartItems, updateQuantity, removeFromCart } = useCart();
-
+    const navigate = useNavigate();
     // Hàm định dạng tiền tệ VNĐ cho chuẩn giao diện
     const formatPrice = (price) => {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
@@ -105,7 +106,7 @@ const CartPage = () => {
                                 <span className="total-price-value">{formatPrice(calculateTotalPrice())}</span>
                             </div>
 
-                            <button className="btn-checkout" onClick={() => toast.success("Tính năng thanh toán đang được phát triển!")}>
+                            <button onClick={() => navigate('/checkout')} className="btn-go-to-checkout">
                                 Tiến hành thanh toán
                             </button>
 
