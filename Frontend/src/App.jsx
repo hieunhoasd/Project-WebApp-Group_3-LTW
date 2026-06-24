@@ -6,8 +6,13 @@ import Login from "./pages/Login/login";
 import Register from "./pages/Register/register";
 import CartPage from './pages/CartPage/CartPage';
 import UserProfile from "./pages/UserProfile/UserProfile";
-import "./App.css";
 import ProductDetailPage from "./pages/ProductDetailPage/ProductDetailPage";
+import CategoryPage from "./pages/Category/CategoryPage";
+import AdminPage from "./pages/Admin/AdminPage";
+import AdminRoute from "./components/AdminRoute";
+import NotFound from "./pages/NotFound/NotFound";
+
+import "./App.css";
 
 const MainLayout = ({ children }) => {
   return (
@@ -36,6 +41,15 @@ function App() {
           <UserProfile />
         </MainLayout>
       } />
+
+      <Route path="/admin" element={
+        <AdminRoute>
+          <AdminPage />
+        </AdminRoute>
+      } />
+      <Route path="/category/:categoryId" element={<CategoryPage />} />
+      <Route path="/404" element={<NotFound />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

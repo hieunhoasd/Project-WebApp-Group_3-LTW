@@ -1,0 +1,80 @@
+/* =========================================
+   CSS CHO TRANG 404 NOT FOUND - VELORA STORE
+   ========================================= */
+
+.notfound-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    /* Chiếm toàn bộ chiều cao màn hình */
+    background-color: #f4f7fe;
+    /* Màu nền đồng bộ với Admin Dashboard */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.notfound-code {
+    font-size: 160px;
+    font-weight: 900;
+    margin: 0;
+    /* Hiệu ứng Gradient mượt mà cho số 404 */
+    background: linear-gradient(135deg, #4318ff 0%, #868cff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Đổ bóng nhẹ tạo chiều sâu */
+    filter: drop-shadow(0px 10px 15px rgba(67, 24, 255, 0.2));
+    line-height: 1;
+    letter-spacing: -5px;
+}
+
+.notfound-title {
+    font-size: 32px;
+    color: #2b3674;
+    /* Màu chữ tiêu đề đặc trưng của Velora */
+    font-weight: 800;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.notfound-desc {
+    font-size: 16px;
+    color: #a3aed1;
+    /* Màu xám xanh cho text phụ */
+    max-width: 500px;
+    line-height: 1.6;
+    margin-top: 0;
+    margin-bottom: 40px;
+    font-weight: 500;
+}
+
+.notfound-btn {
+    background-color: #4318ff;
+    color: #ffffff;
+    border: none;
+    padding: 15px 40px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 12px;
+    /* Bo góc 12px giống các nút trong Admin */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(67, 24, 255, 0.3);
+}
+
+/* Hiệu ứng khi di chuột vào nút */
+.notfound-btn:hover {
+    background-color: #2b3674;
+    /* Chuyển sang xanh đen */
+    transform: translateY(-4px);
+    /* Nổi nút lên nhẹ */
+    box-shadow: 0 8px 25px rgba(67, 24, 255, 0.4);
+}
+
+/* Hiệu ứng khi click nút */
+.notfound-btn:active {
+    transform: translateY(0);
+}

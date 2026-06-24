@@ -24,13 +24,23 @@ function Login() {
       });
 
       if (response.data.code === 200) {
-        // 🔥 LƯU TOKEN VÀO LOCALSTORAGE ĐỂ CHỨNG THỰC CHO CÁC API KHÁC
+        // 🔥 1. LƯU TOKEN VÀO LOCALSTORAGE
         if (response.data.token) {
           localStorage.setItem('user_token', response.data.token);
         }
 
-        // Vẫn lưu thông tin user cơ bản để hiển thị nhanh (nếu cần)
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+        // 🔥 2. ĐÃ SỬA: Lưu trực tiếp response.data.user (có chứa ẩn flag isAdmin)
+        if (response.data.user) {
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+        }
+
+        // 3. Điều hướng dựa trên quyền hạn (Optional nhưng nên làm)
+        // Nếu muốn đăng nhập xong Admin vào thẳng trang quản trị, bạn có thể mở dòng check này:
+        // if (response.data.user?.isAdmin) {
+        //   navigate('/admin');
+        // } else {
+        //   navigate('/');
+        // }
 
         navigate('/');
         window.location.reload();

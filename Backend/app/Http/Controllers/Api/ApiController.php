@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Exception;
 
 class ApiController extends Controller
 {
@@ -71,41 +72,57 @@ class ApiController extends Controller
 
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email',
-            'password' => 'required|string|min:6',
-        ]);
+        try {
+            $validator = Validator::make($request->all(), [
+                'email' => 'required|string|email',
+                'password' => 'required|string|min:6',
+            ]);
 
-        if ($validator->fails()) {
+            if ($validator->fails()) {
+                return response()->json([
+                    'code' => 400,
+                    'message' => 'Dữ liệu không hợp lệ!',
+                    'errors' => $validator->errors()
+                ], 400);
+            }
+
+            // Lấy thông tin user từ database
+            $user = DB::table('users')->where('email', $request->email)->first();
+
+            // Kiểm tra user tồn tại và check mật khẩu
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'code' => 401,
+                    'message' => 'Email hoặc mật khẩu không chính xác!'
+                ], 401);
+            }
+
+            // Tạo token mã hóa chuỗi cơ bản
+            $token = base64_encode($user->email . '_' . time());
+
+            // 🌟 ĐỒNG BỘ BẢO MẬT: Ép kiểu dữ liệu về chuỗi text thuần túy để so sánh an toàn
+            $userRole = isset($user->role) ? (string)$user->role : 'customer';
+            $isAdmin = ($userRole === 'admin'); // Trả về true nếu cột role trong DB có chữ 'admin'
+
             return response()->json([
-                'code' => 400,
-                'message' => 'Dữ liệu không hợp lệ!',
-                'errors' => $validator->errors()
-            ], 400);
-        }
-
-        $user = DB::table('users')->where('email', $request->email)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
+                'code' => 200,
+                'message' => 'Đăng nhập thành công!',
+                'token' => $token,
+                'user' => [
+                    'id' => $user->id,
+                    'firstname' => $user->firstname,
+                    'lastname' => $user->lastname,
+                    'email' => $user->email,
+                    'isAdmin' => $isAdmin // Trả về true/false về cho React nhận diện ẩn
+                ]
+            ], 200);
+        } catch (Exception $e) {
+            // Nếu có bất kỳ lỗi phát sinh nào, dòng này sẽ hứng lấy và hiển thị chi tiết thay vì vứt lỗi sập 500 trắng trơn
             return response()->json([
-                'code' => 401,
-                'message' => 'Email hoặc mật khẩu không chính xác!'
-            ], 401);
+                'code' => 500,
+                'message' => 'Lỗi máy chủ nội bộ: ' . $e->getMessage()
+            ], 500);
         }
-
-        $token = base64_encode($user->email . '_' . time());
-
-        return response()->json([
-            'code' => 200,
-            'message' => 'Đăng nhập thành công!',
-            'token' => $token, // 🌟 Gửi token này về cho React
-            'user' => [
-                'id' => $user->id,
-                'firstname' => $user->firstname,
-                'lastname' => $user->lastname,
-                'email' => $user->email
-            ]
-        ], 200);
     }
 
     public function logout(Request $request)
@@ -132,7 +149,7 @@ class ApiController extends Controller
             $products = DB::table('products')
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->select(
-                    'products.id', // Giữ đúng ID của sản phẩm để khi bấm vào xem chi tiết không bị sai
+                    'products.id',
                     'products.category_id',
                     'categories.name as category_name',
                     'products.name',
@@ -144,7 +161,6 @@ class ApiController extends Controller
                     'products.created_at'
                 )
                 ->get();
-
             return response()->json([
                 'code' => 200,
                 'message' => 'Lấy danh sách sản phẩm thành công!',
@@ -348,6 +364,10 @@ class ApiController extends Controller
         }
     }
 
+    // ==========================================
+    // 5. CHỨC NĂNG ĐẶT HÀNG (ORDERS & ORDER_DETAILS)
+    // ==========================================
+
     public function getUserProfile(Request $request)
     {
         // Lấy token từ Header do React gửi lên
@@ -385,5 +405,235 @@ class ApiController extends Controller
                 'phone' => $user->phone
             ]
         ], 200);
+    }
+
+    public function getAllUsers()
+    {
+        try {
+            // Lấy danh sách user, loại bỏ cột password
+            $users = DB::table('users')
+                ->select('id', 'firstname', 'lastname', 'email', 'phone', 'role', 'created_at')
+                ->orderBy('id', 'desc') // Sắp xếp user mới nhất lên đầu
+                ->get();
+
+            return response()->json([
+                'code' => 200,
+                'message' => 'Lấy danh sách người dùng thành công!',
+                'data' => $users
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => 'Lỗi máy chủ nội bộ: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    // Hàm xóa người dùng dành cho Admin
+    public function deleteUser($id)
+    {
+        try {
+            // Kiểm tra xem user có tồn tại không
+            $user = DB::table('users')->where('id', $id)->first();
+
+            if (!$user) {
+                return response()->json([
+                    'code' => 404,
+                    'message' => 'Không tìm thấy người dùng này trong hệ thống!'
+                ], 404);
+            }
+
+            // Thực hiện xóa
+            DB::table('users')->where('id', $id)->delete();
+
+            return response()->json([
+                'code' => 200,
+                'message' => 'Xóa tài khoản người dùng thành công!'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => 'Lỗi khi xóa người dùng: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    public function getAdminProducts()
+    {
+        try {
+            $products = DB::table('products')
+                // Thực hiện JOIN sang bảng categories dựa trên id danh mục
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->select(
+                    'products.id',
+                    'products.name',
+                    'products.price',
+                    'products.quantity',
+                    'products.created_at',
+                    'categories.name as category_name' // Lấy tên danh mục ra đặt tên là category_name
+                )
+                ->orderBy('products.id', 'desc') // Đưa sản phẩm mới nhất lên đầu
+                ->get();
+
+            return response()->json([
+                'code' => 200,
+                'message' => 'Lấy danh sách sản phẩm quản trị thành công!',
+                'data' => $products
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => 'Lỗi hệ thống: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    public function deleteProduct($id)
+    {
+        try {
+            // Tìm sản phẩm trong DB
+            $product = DB::table('products')->where('id', $id)->first();
+
+            // Nếu không tìm thấy sản phẩm
+            if (!$product) {
+                return response()->json([
+                    'code' => 404,
+                    'message' => 'Sản phẩm không tồn tại hoặc đã bị xóa trước đó!'
+                ], 404);
+            }
+
+            // Tiến hành xóa khỏi DB
+            DB::table('products')->where('id', $id)->delete();
+
+            return response()->json([
+                'code' => 200,
+                'message' => 'Xóa sản phẩm khỏi hệ thống thành công!'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => 'Lỗi hệ thống khi xóa: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    public function createProduct(Request $request)
+    {
+        try {
+            // 1. Kiểm tra dữ liệu đầu vào (Validate) dựa theo Model của sếp
+            $request->validate([
+                'category_id' => 'required|integer',
+                'name'        => 'required|string|max:255',
+                'price'       => 'required|numeric|min:0',
+                'quantity'    => 'required|integer|min:0',
+                'description' => 'nullable|string',
+                'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // Tối đa 2MB
+            ], [
+                'category_id.required' => 'Vui lòng chọn danh mục sản phẩm.',
+                'name.required'        => 'Tên sản phẩm không được để trống.',
+                'price.required'       => 'Giá bán không được để trống.',
+                'quantity.required'    => 'Số lượng kho không được để trống.',
+                'image.image'          => 'File tải lên phải là định dạng hình ảnh.',
+                'image.max'            => 'Kích thước ảnh tối đa là 2MB.',
+            ]);
+
+            // 2. Xử lý Upload hình ảnh nếu Admin có chọn file
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                // Lưu vào public/storage/products
+                $file->storeAs('products', $fileName, 'public');
+                // Đường dẫn lưu vào DB: /storage/products/tên_file
+                $imagePath = '/storage/products/' . $fileName;
+            }
+
+            // 3. Tiến hành thêm dữ liệu trực tiếp vào DB
+            $productId = DB::table('products')->insertGetId([
+                'category_id' => $request->category_id,
+                'name'        => $request->name,
+                'price'       => $request->price,
+                'quantity'    => $request->quantity,
+                'description' => $request->description,
+                'image'       => $imagePath,
+                'status'      => 1, // Mặc định là Active khi tạo mới
+                'created_at'  => now(),
+                'updated_at'  => now(),
+            ]);
+
+            // 4. Lấy lại sản phẩm vừa tạo kết hợp JOIN với categories để hiển thị đồng bộ lên table frontend
+            $newProduct = DB::table('products')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->select(
+                    'products.id',
+                    'products.category_id',
+                    'categories.name as category_name',
+                    'products.name',
+                    'products.price',
+                    'products.image',
+                    'products.description',
+                    'products.quantity',
+                    'products.status',
+                    'products.created_at'
+                )
+                ->where('products.id', $productId)
+                ->first();
+
+            return response()->json([
+                'code' => 200,
+                'message' => 'Thêm sản phẩm mới thành công!',
+                'data' => $newProduct
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'code' => 422,
+                'message' => 'Dữ liệu không hợp lệ!',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => 'Lỗi hệ thống khi tạo sản phẩm: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    public function getAdminCategories()
+    {
+        try {
+            $categories = DB::table('categories')
+                ->select('id', 'name')
+                ->get();
+
+            return response()->json([
+                'code' => 200,
+                'message' => 'Lấy danh sách danh mục thành công!',
+                'data' => $categories
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => 'Lỗi: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    public function getProductsByCategory($id)
+    {
+        try {
+            // Lấy các sản phẩm có category_id khớp và đang ở trạng thái kích hoạt (status = 1)
+            $products = DB::table('products')
+                ->where('category_id', $id)
+                ->where('status', 1)
+                ->get();
+
+            // Lấy thêm thông tin tên danh mục để hiển thị tiêu đề ở FE
+            $category = DB::table('categories')->where('id', $id)->first();
+
+            return response()->json([
+                'code' => 200,
+                'category_name' => $category ? $category->name : 'Danh mục',
+                'data' => $products
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => 500,
+                'message' => 'Lỗi server: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

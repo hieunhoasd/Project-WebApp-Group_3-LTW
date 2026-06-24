@@ -1,22 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
 import './header.css';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Bổ sung thư viện axios
+import { useNavigate, Link } from 'react-router-dom'; // Thêm Link để điều hướng mượt mà
+import axios from 'axios';
 
 const Header = () => {
   const { getCartCount } = useCart();
   const navigate = useNavigate();
 
-  // State để lấy thông tin user từ localStorage
+  // State quản lý thông tin user và danh sách danh mục từ Database
   const [user, setUser] = useState(null);
+  const [categoriesList, setCategoriesList] = useState([]); // State mới lưu danh mục
 
   useEffect(() => {
-    // Lấy thông tin user đã lưu lúc đăng nhập
+    // 1. Lấy thông tin user đã lưu lúc đăng nhập
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+
+    // 2. Gọi API lấy danh mục động từ Backend
+    const fetchHeaderCategories = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/admin/categories');
+        const result = await response.json();
+        if (result.code === 200) {
+          setCategoriesList(result.data);
+        }
+      } catch (error) {
+        console.error("Lỗi lấy danh mục tại Header:", error);
+      }
+    };
+
+    fetchHeaderCategories();
   }, []);
 
   // 🌟 HÀM XỬ LÝ ĐĂNG XUẤT
@@ -25,46 +41,48 @@ const Header = () => {
     const apiURL = import.meta.env.VITE_API_BASE_URL;
 
     try {
-      // Gọi API báo Backend hủy Session
       await axios.post(`${apiURL}/auth/logout`, {}, {
         withCredentials: true
       });
     } catch (error) {
       console.error("Lỗi khi đăng xuất server:", error);
     } finally {
-      // Dù API thành công hay lỗi mạng, vẫn phải xóa user ở dưới Local và đá ra ngoài
       localStorage.removeItem('user');
       navigate('/login');
-      window.location.reload(); // Tải lại trang để reset toàn bộ state
+      window.location.reload();
     }
   };
 
   return (
     <header className="header-container">
-      {/* 1. Phần Logo & Slogan */}
-      <a href="/" className="header-logo-section">
+      {/* 1. Phần Logo & Slogan (Dùng Link thay vì thẻ a) */}
+      <Link to="/" className="header-logo-section">
         <h1 className="logo">VELORA<span className="dot">.</span></h1>
         <span className="logo-subtitle">SPORT • STYLE • YOU</span>
-      </a>
+      </Link>
 
       {/* 2. Menu Điều Hướng */}
       <ul className="nav-links">
-        <li><a href="/" className="active">Trang chủ</a></li>
+        <li><Link to="/" className="active">Trang chủ</Link></li>
 
         <li className="dropdown">
-          <a href="/shop">Sản phẩm ▾</a>
+          <Link to="/">Sản phẩm ▾</Link>
           <ul className="dropdown-menu">
-            <li><a href="/category/ao-nam">Áo Nam</a></li>
-            <li><a href="/category/quan-nam">Quần Nam</a></li>
-            <li><a href="/category/ao-nu">Áo Nữ</a></li>
-            <li><a href="/category/quan-nu">Quần Nữ</a></li>
-            <li><a href="/category/do-the-thao">Đồ thể thao</a></li>
-            <li><a href="/category/phu-kien">Phụ kiện</a></li>
+            {categoriesList.length > 0 ? (
+              categoriesList.map((cat) => (
+                <li key={cat.id}>
+                  {/* Đường dẫn truyền ID chuẩn sang CategoryPage */}
+                  <Link to={`/category/${cat.id}`}>{cat.name}</Link>
+                </li>
+              ))
+            ) : (
+              <li style={{ padding: '8px 15px', color: '#a3aed1', fontSize: '13px' }}>Đang tải...</li>
+            )}
           </ul>
         </li>
 
-        <li><a href="/about">Giới thiệu</a></li>
-        <li><a href="/contact">Liên hệ</a></li>
+        <li><Link to="/about">Giới thiệu</Link></li>
+        <li><Link to="/contact">Liên hệ</Link></li>
       </ul>
 
       {/* 3. Khu vực Tìm kiếm & Chức năng */}
@@ -87,15 +105,14 @@ const Header = () => {
           )}
         </div>
 
-        {/* 🌟 KIỂM TRA ĐĂNG NHẬP ĐỂ HIỂN THỊ ICON USER HOẶC NÚT LOGIN */}
+        {/* 🌟 KIỂM TRA ĐĂNG NHẬP */}
         {user ? (
           <>
-            <a href="/user-profile" className="action-icon user-icon" title="Tài khoản của tôi">
+            <Link to="/user-profile" className="action-icon user-icon" title="Tài khoản của tôi">
               👤
-            </a>
+            </Link>
             <div className="user-greeting">
               Hi, <span style={{ fontWeight: 'bold' }}>{user.firstname}</span> |{' '}
-              {/* Đổi thẻ a href thành span có onClick */}
               <span className="logout-btn" onClick={handleLogout} style={{ cursor: 'pointer', color: '#ff4d4f' }}>
                 Đăng xuất
               </span>
@@ -103,7 +120,7 @@ const Header = () => {
           </>
         ) : (
           <div className="user-greeting">
-            <a href="/login" className="login-link-btn" style={{ fontWeight: 'bold' }}>Đăng nhập</a>
+            <Link to="/login" className="login-link-btn" style={{ fontWeight: 'bold' }}>Đăng nhập</Link>
           </div>
         )}
       </div>

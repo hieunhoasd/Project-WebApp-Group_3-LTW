@@ -20,13 +20,11 @@ const Home = () => {
 
   // Hàm xử lý khi click vào nút "Xem thêm"
   const handleLoadMore = () => {
-    setVisibleCount(prevCount => prevCount + 20); // Mỗi lần bấm tăng thêm 20 sản phẩm
+    setVisibleCount(prevCount => prevCount + 20);
   };
 
   return (
     <div className="home-page-container">
-
-      {/* KHÔI PHỤC PHẦN BANNER Ở ĐÂY */}
       <div className="hero-banner">
         <h1>VELORA <span className="highlight">STORE</span></h1>
         <p>Khám phá bộ sưu tập thời trang thể thao cao cấp. Nâng tầm phong cách và hiệu suất tập luyện của bạn ngay hôm nay.</p>
@@ -37,13 +35,10 @@ const Home = () => {
         <h2 className="section-title">Sản phẩm nổi bật</h2>
 
         <div className="product-grid">
-          {/* Chỉ hiển thị số lượng sản phẩm theo visibleCount */}
           {products.slice(0, visibleCount).map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
-
-        {/* Nút Xem thêm */}
         {products.length > visibleCount && (
           <div className="load-more-container">
             <button className="btn-load-more" onClick={handleLoadMore}>
