@@ -1,38 +1,39 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import "./register.css";
+import './register.css';
+// ĐÃ SỬA: Import từ file cấu hình axios dùng chung thay vì thư viện gốc
+import axios from '../../context/axios';
 
 function Register() {
-    const [fullname, setFullname] = useState('');
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
 
-    // State lưu trữ các lỗi validation trả về từ Laravel Backend
     const [errors, setErrors] = useState({});
-    // State lưu lỗi hệ thống chung (mất mạng, sập server, 404...)
     const [serverError, setServerError] = useState('');
     const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
-
-        // Xóa sạch các thông báo lỗi cũ trước khi gửi request mới
         setErrors({});
         setServerError('');
 
         const apiURL = import.meta.env.VITE_API_BASE_URL;
 
         try {
+            // ĐÃ SỬA: Gửi đúng các trường dữ liệu mà Laravel Validator yêu cầu
             const response = await axios.post(`${apiURL}/auth/register`, {
-                fullname,
+                firstname,
+                lastname,
                 email,
                 password,
                 phone
             });
 
-            if (response.data.code === 201) {
+            // Backend trả về mã code 201 khi tạo tài khoản thành công
+            if (response.status === 201 || response.data.code === 201) {
                 navigate('/login');
             }
         } catch (error) {
@@ -44,17 +45,14 @@ function Register() {
                     if (responseData.errors) {
                         setErrors(responseData.errors);
                     } else if (responseData.message) {
-                        setErrors({ email: [responseData.message] });
+                        setServerError(responseData.message);
                     }
-                }
-                else {
+                } else {
                     setServerError(`Lỗi hệ thống (${status}): ` + (responseData.message || "Vui lòng thử lại sau."));
                 }
-            }
-            else if (error.request) {
+            } else if (error.request) {
                 setServerError("📡 Không thể kết nối tới máy chủ Backend! Hãy đảm bảo bạn đã chạy lệnh 'php artisan serve'.");
-            }
-            else {
+            } else {
                 setServerError("❌ Đã xảy ra lỗi: " + error.message);
             }
         }
@@ -69,21 +67,34 @@ function Register() {
                 {serverError && <div className="server-error-box">{serverError}</div>}
 
                 <form className="auth-form" onSubmit={handleRegister}>
-                    <div className="input-group">
-                        <input
-                            type="text"
-                            placeholder="Tên của bạn"
-                            value={fullname}
-                            onChange={(e) => setFullname(e.target.value)}
-                            required
-                        />
-                        {errors.fullname && <p className="error-message">{errors.fullname[0]}</p>}
+                    {/* ĐÃ SỬA: Tách thành Họ và Tên để mapping chuẩn database */}
+                    <div className="input-row" style={{ display: 'flex', gap: '10px' }}>
+                        <div className="input-group" style={{ flex: 1 }}>
+                            <input
+                                type="text"
+                                placeholder="Họ"
+                                value={lastname}
+                                onChange={(e) => setLastname(e.target.value)}
+                                required
+                            />
+                            {errors.lastname && <p className="error-message">{errors.lastname[0]}</p>}
+                        </div>
+                        <div className="input-group" style={{ flex: 1 }}>
+                            <input
+                                type="text"
+                                placeholder="Tên"
+                                value={firstname}
+                                onChange={(e) => setFirstname(e.target.value)}
+                                required
+                            />
+                            {errors.firstname && <p className="error-message">{errors.firstname[0]}</p>}
+                        </div>
                     </div>
 
                     {/* Ô NHẬP EMAIL */}
                     <div className="input-group">
                         <input
-                            type="email" /* Chuyển type thành email cho chuẩn xác */
+                            type="email"
                             placeholder="Tài khoản email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -99,7 +110,6 @@ function Register() {
                             placeholder="Số điện thoại"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
-                            required
                         />
                         {errors.phone && <p className="error-message">{errors.phone[0]}</p>}
                     </div>
@@ -108,7 +118,7 @@ function Register() {
                     <div className="input-group">
                         <input
                             type="password"
-                            placeholder="Password"
+                            placeholder="Mật khẩu (tối thiểu 6 ký tự)"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
@@ -124,7 +134,9 @@ function Register() {
                 <div className="auth-toggle">
                     <p>
                         Đã có tài khoản rồi?{' '}
-                        <span onClick={() => navigate('/login')}>Đăng nhập</span>
+                        <span onClick={() => navigate('/login')} style={{ cursor: 'pointer', color: '#007bff' }}>
+                            Đăng nhập
+                        </span>
                     </p>
                 </div>
             </div>

@@ -1,8 +1,24 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext'; // (Đường dẫn lùi 1 cấp của bạn)
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 const ProductCard = ({ product }) => {
+    const toastSuccessStyle = {
+        style: {
+            borderRadius: '10px',
+            background: '#ffffff',
+            color: '#2b3674',
+            boxShadow: '0 10px 25px rgba(67, 24, 255, 0.08)',
+            fontWeight: '550',
+            fontSize: '14px',
+            padding: '12px 20px',
+            border: '1px solid rgba(67, 24, 255, 0.1)'
+        },
+        iconTheme: {
+            primary: '#4318ff',
+            secondary: '#ffffff',
+        },
+    };
     const navigate = useNavigate();
     // Lấy hàm addToCart từ Context
     const { addToCart } = useCart();
@@ -14,10 +30,13 @@ const ProductCard = ({ product }) => {
 
     // Hàm xử lý thêm nhanh vào giỏ hàng khi ấn icon xe đẩy
     const handleAddToCartClick = (e) => {
-        e.preventDefault(); // (Nếu có dùng thẻ Link bọc ngoài thì thêm dòng này để không bị chuyển trang)
-        e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+        e.preventDefault(); // Ngăn hành vi mặc định nếu bọc trong thẻ Link
+        e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài làm nhảy trang chi tiết
+
         addToCart(product, 1);
-        toast.success(`Đã thêm "${product.name}" vào giỏ hàng!`);
+
+        // SỬA TẠI ĐÂY: Truyền cấu hình toastSuccessStyle vào để đồng bộ giao diện xịn sò
+        toast.success(`Đã thêm "${product.name}" vào giỏ hàng!`, toastSuccessStyle);
     };
 
     return (

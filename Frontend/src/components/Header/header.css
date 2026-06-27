@@ -297,3 +297,16 @@ a.action-icon {
     justify-content: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+
+.action-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    /* Đổi màu icon tùy thích */
+    transition: color 0.3s ease;
+}
+
+.action-icon:hover {
+    color: #007bff;
+}

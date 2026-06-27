@@ -1,22 +1,33 @@
 /* src/index.css */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9fafb;
-  width: 100%;
-  overflow-x: hidden;
-  /* Tránh thanh cuộn ngang */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9fafb;
+    width: 100%;
+    overflow-x: hidden;
+    /* Tránh thanh cuộn ngang */
 }
 
 /* Thẻ root của React phải chiếm 100% chiều rộng */
 #root {
-  width: 100%;
-  min-height: 100vh;
-  display: block;
-  /* Ghi đè cái flex mặc định của Vite */
+    width: 100%;
+    min-height: 100vh;
+    display: block;
+    /* Ghi đè cái flex mặc định của Vite */
+}
+
+.main-layout-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Phần nội dung ở giữa sẽ tự động giãn ra để lấp đầy chỗ trống */
+.main-layout-content {
+    flex: 1;
 }

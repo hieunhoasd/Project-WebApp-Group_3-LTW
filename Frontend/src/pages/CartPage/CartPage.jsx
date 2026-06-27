@@ -1,16 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import Header from '../../components/Header/header';
 import Footer from '../../components/Footer/footer';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+// ĐÃ SỬA: Chuyển hoàn toàn sang thư viện react-hot-toast của Velora Store
+import { toast } from 'react-hot-toast';
 import './CartPage.css';
 
 const CartPage = () => {
     // Lấy dữ liệu và các hàm xử lý từ Context ra
     const { cartItems, updateQuantity, removeFromCart } = useCart();
     const navigate = useNavigate();
+
     // Hàm định dạng tiền tệ VNĐ cho chuẩn giao diện
     const formatPrice = (price) => {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
@@ -23,7 +24,24 @@ const CartPage = () => {
 
     const handleRemove = (id, name) => {
         removeFromCart(id);
-        toast.info(`Đã xóa "${name}" khỏi giỏ hàng`);
+        // ĐÃ SỬA: Dùng phương thức success/error chuẩn, bỏ info() cũ để ăn giao diện tím đồng bộ
+        toast.success(`Đã xóa "${name}" khỏi giỏ hàng`);
+    };
+
+    // 🌟 THÊM MỚI: Xử lý logic khi nhấn nút Thanh toán
+    const handleProceedToCheckout = () => {
+        const token = localStorage.getItem('user_token'); // Kiểm tra xem đã đăng nhập chưa
+
+        if (!token) {
+            // ĐÃ SỬA: Thay warning() bằng error() để thông báo đăng nhập rõ ràng, chuẩn phong cách Velora
+            toast.error('Vui lòng đăng nhập để tiến hành thanh toán!');
+
+            // Chuyển sang trang login và đính kèm state để biết đường quay lại
+            navigate('/login', { state: { redirectTo: '/checkout' } });
+        } else {
+            // Đã đăng nhập thì cho qua trang thanh toán bình thường
+            navigate('/checkout');
+        }
     };
 
     return (
@@ -106,8 +124,9 @@ const CartPage = () => {
                                 <span className="total-price-value">{formatPrice(calculateTotalPrice())}</span>
                             </div>
 
-                            <button onClick={() => navigate('/checkout')} className="btn-go-to-checkout">
-                                Tiến hành thanh toán
+                            {/* 🌟 CẬP NHẬT: Gắn hàm handleProceedToCheckout vào nút bấm */}
+                            <button onClick={handleProceedToCheckout} className="btn-go-to-checkout">
+                                TIẾN HÀNH THANH TOÁN
                             </button>
 
                             <Link to="/" className="continue-link">← Tiếp tục mua sắm</Link>
@@ -120,5 +139,4 @@ const CartPage = () => {
         </>
     );
 };
-
 export default CartPage;

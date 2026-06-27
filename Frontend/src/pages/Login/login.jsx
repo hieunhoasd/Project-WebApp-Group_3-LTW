@@ -1,14 +1,19 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate, useLocation } from 'react-router-dom'; // 🌟 ĐÃ THÊM: useLocation
 import './login.css';
+import axios from '../../context/axios';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('');
+
   const navigate = useNavigate();
+  const location = useLocation(); // 🌟 Lấy location để đọc tín hiệu truyền tới
+
+  // 🌟 ĐÃ THÊM: Lấy đường dẫn cần quay lại từ state (nếu có), mặc định là trang chủ '/'
+  const redirectUrl = location.state?.redirectTo || '/';
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -18,32 +23,35 @@ function Login() {
     const apiURL = import.meta.env.VITE_API_BASE_URL;
 
     try {
+      // Gọi API đăng nhập từ Backend
       const response = await axios.post(`${apiURL}/auth/login`, {
         email,
         password
       });
 
-      if (response.data.code === 200) {
-        // 🔥 1. LƯU TOKEN VÀO LOCALSTORAGE
-        if (response.data.token) {
-          localStorage.setItem('user_token', response.data.token);
+      // Backend trả về status 200 và success = true
+      if (response.status === 200 && response.data.success) {
+        const { token, user } = response.data.data; // Phân tách dữ liệu từ bọc 'data' của Backend
+
+        // BẮT BUỘC: Lưu token vào localStorage để các request sau đính kèm vào Header Authorization
+        if (token) {
+          localStorage.setItem('user_token', token);
         }
 
-        // 🔥 2. ĐÃ SỬA: Lưu trực tiếp response.data.user (có chứa ẩn flag isAdmin)
-        if (response.data.user) {
-          localStorage.setItem('user', JSON.stringify(response.data.user));
+        // Lưu thông tin user để hiển thị UI
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user));
         }
 
-        // 3. Điều hướng dựa trên quyền hạn (Optional nhưng nên làm)
-        // Nếu muốn đăng nhập xong Admin vào thẳng trang quản trị, bạn có thể mở dòng check này:
-        // if (response.data.user?.isAdmin) {
-        //   navigate('/admin');
-        // } else {
-        //   navigate('/');
-        // }
-
-        navigate('/');
-        window.location.reload();
+        // 🌟 CẬP NHẬT LOGIC ĐIỀU HƯỚNG: 
+        // Dùng window.location.href để vừa chuyển hướng, vừa kích hoạt reload lại trang 
+        // giúp Header/CartContext nhận diện ngay User mới đăng nhập.
+        if (user?.isAdmin) {
+          window.location.href = '/admin';
+        } else {
+          // Trả khách hàng về đúng trang họ đang thao tác dở (Ví dụ: /checkout)
+          window.location.href = redirectUrl;
+        }
       }
     } catch (error) {
       if (error.response) {
@@ -62,9 +70,9 @@ function Login() {
           setServerError(`Lỗi hệ thống (${status}): Vui lòng quay lại sau.`);
         }
       } else if (error.request) {
-        setServerError("📡 Không thể kết nối tới máy chủ! Bạn đã bật lệnh 'php artisan serve' chưa?");
+        setServerError("📡 Không thể kết nối tới máy chủ Backend! Bạn đã bật lệnh 'php artisan serve' chưa?");
       } else {
-        setServerError("❌ Đã xảy ra lỗi: " + error.message);
+        setServerError("❌ Đã xảy ra lỗi hệ thống: " + error.message);
       }
     }
   };
@@ -108,7 +116,9 @@ function Login() {
         <div className="auth-toggle">
           <p>
             Chưa có tài khoản?{' '}
-            <span onClick={() => navigate('/register')}>Đăng ký ngay</span>
+            <span onClick={() => navigate('/register')} style={{ cursor: 'pointer', color: '#007bff' }}>
+              Đăng ký ngay
+            </span>
           </p>
         </div>
       </div>

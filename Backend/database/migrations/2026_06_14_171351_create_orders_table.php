@@ -12,9 +12,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->decimal('total_price', 12, 0);
-            $table->string('status')->default('pending'); // pending / processing / shipped / completed / canceled
+            $table->string('status')->default('pending');
             $table->string('shipping_address');
             $table->string('phone_receiver');
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

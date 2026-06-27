@@ -90,3 +90,169 @@
     padding: 100px;
     font-size: 1.2rem;
 }
+
+/* ==============================================================
+   PHẦN ĐÁNH GIÁ & BÌNH LUẬN (REVIEWS & COMMENTS)
+   ============================================================== */
+
+.product-reviews-section {
+    margin-top: 60px;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.product-reviews-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    color: #333;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- Form bình luận --- */
+.review-form {
+    background-color: #f8f9fa;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    border: 1px solid #eee;
+}
+
+.review-form-group {
+    margin-bottom: 18px;
+}
+
+.review-form-group label {
+    font-weight: 600;
+    margin-right: 15px;
+    color: #444;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.review-form-group select {
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 1px solid #ccd0d5;
+    outline: none;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: #fff;
+    transition: border-color 0.2s;
+}
+
+.review-form-group select:focus {
+    border-color: #6200ea;
+}
+
+.review-form-group textarea {
+    width: 100%;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccd0d5;
+    resize: vertical;
+    min-height: 110px;
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.review-form-group textarea:focus {
+    border-color: #6200ea;
+    box-shadow: 0 0 0 3px rgba(98, 0, 234, 0.1);
+}
+
+.btn-submit-review {
+    padding: 12px 28px;
+    background-color: #6200ea;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn-submit-review:hover {
+    background-color: #4500b5;
+}
+
+.btn-submit-review:active {
+    transform: scale(0.98);
+}
+
+/* --- Danh sách bình luận --- */
+.comments-list {
+    margin-top: 20px;
+}
+
+.comment-item {
+    border-bottom: 1px solid #eee;
+    padding: 20px 0;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.comment-item:last-child {
+    border-bottom: none;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.comment-author {
+    font-weight: 700;
+    margin-right: 15px;
+    color: #222;
+    font-size: 1.1rem;
+}
+
+.comment-rating {
+    color: #ffc107;
+    /* Màu vàng 🌟 */
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+}
+
+.comment-content {
+    margin: 10px 0;
+    color: #555;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.comment-date {
+    font-size: 0.85rem;
+    color: #999;
+}
+
+.no-comments {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    padding: 40px 0;
+    background-color: #fcfcfc;
+    border-radius: 8px;
+    border: 1px dashed #ddd;
+}
+
+/* Hiệu ứng mượt mà khi load bình luận */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
