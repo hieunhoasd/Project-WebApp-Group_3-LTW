@@ -6,50 +6,111 @@
   padding-bottom: 80px;
 }
 
-/* Banner chính */
+/* ================= BANNER CHÍNH (ĐÃ CẢI TIẾN) ================= */
 .hero-banner {
-  background: linear-gradient(135deg, #312e81 0%, #581c87 50%, #000000 100%);
-  color: #ffffff;
+  /* Sử dụng ảnh nền chủ đề thể thao chất lượng cao */
+  background-image: url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1920&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  width: 100%;
+  min-height: 60vh; /* Tăng chiều cao để nhìn banner thoáng và đẹp hơn */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 100px 20px;
+  overflow: hidden;
+}
+
+/* Lớp phủ làm tối ảnh nền giúp nổi bật chữ */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(49, 46, 129, 0.8) 0%, rgba(88, 28, 135, 0.7) 50%, rgba(0, 0, 0, 0.85) 100%);
+  z-index: 1;
+}
+
+/* Nội dung của Banner */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 0 20px;
+  /* Tạo hiệu ứng mượt mà khi tải trang */
+  animation: fadeInUp 1s ease-out;
 }
 
 .hero-banner h1 {
-  font-size: 3.5rem;
-  margin-bottom: 15px;
-  font-weight: 800;
+  font-size: 4rem; /* Tăng kích thước chữ lớn hơn */
+  margin-bottom: 20px;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  /* Thêm bóng đổ giúp chữ sắc nét tuyệt đối trên nền ảnh */
+  text-shadow: 2px 4px 15px rgba(0, 0, 0, 0.6);
 }
 
 .hero-banner .highlight {
-  color: #c084fc;
+  color: #ff4a5a; /* Thay đổi sang tông hồng/đỏ thể thao năng động */
 }
 
 .hero-banner p {
-  font-size: 1.2rem;
-  color: #d1d5db;
-  max-width: 600px;
-  margin: 0 auto 30px auto;
+  font-size: 1.3rem;
+  color: #f3f4f6;
+  max-width: 650px;
+  margin: 0 auto 40px auto;
+  line-height: 1.6;
+  text-shadow: 1px 2px 8px rgba(0, 0, 0, 0.5);
 }
 
-/* Nút bấm */
+/* NÚT BẤM "MUA NGAY" TƯƠNG PHẢN CAO */
 .btn-primary {
-  background-color: #ffffff;
-  color: #4c1d95;
-  padding: 12px 30px;
+  background: linear-gradient(90deg, #ff4a5a 0%, #ff7e40 100%); /* Màu Cam/Đỏ Neon cực nổi bật */
+  color: #ffffff;
+  padding: 15px 45px;
   border: none;
   border-radius: 50px;
-  font-size: 1rem;
-  font-weight: bold;
+  font-size: 1.1rem;
+  font-weight: 800;
   text-transform: uppercase;
+  letter-spacing: 1px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(255, 74, 90, 0.4);
+  white-space: nowrap;
+  width: max-content;
+  min-width: 220px;
 }
 
 .btn-primary:hover {
-  background-color: #ede9fe;
-  transform: translateY(-2px);
+  transform: translateY(-4px); /* Hiệu ứng đẩy lên cao hơn khi di chuột */
+  box-shadow: 0 12px 25px rgba(255, 74, 90, 0.6);
+  filter: brightness(1.1);
 }
+
+.btn-primary:active {
+  transform: translateY(-1px);
+}
+
+/* Hiệu ứng mượt mà cho Banner */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= CÁC THÀNH PHẦN KHÁC (GIỮ NGUYÊN) ================= */
 
 /* Khung chứa nội dung */
 .container {
@@ -208,65 +269,7 @@
   border-radius: 8px;
 }
 
-/* Trong file home.css */
-
-.hero-banner {
-  background: linear-gradient(135deg, #312e81 0%, #581c87 50%, #000000 100%);
-  color: #ffffff;
-
-  /* Thêm bộ 4 thuộc tính Flex này để ép bố cục */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  padding: 120px 20px;
-  width: 100%;
-  min-height: 45vh;
-  /* Chiều cao tối thiểu */
-  text-align: center;
-}
-
-.hero-banner h1 {
-  font-size: 3.5rem;
-  margin-bottom: 15px;
-  font-weight: 800;
-  line-height: 1.2;
-}
-
-.hero-banner .highlight {
-  color: #c084fc;
-}
-
-.hero-banner p {
-  font-size: 1.2rem;
-  color: #d1d5db;
-  max-width: 600px;
-  margin-bottom: 30px;
-  /* Sửa lại margin để tách biệt với nút bấm */
-}
-
-.btn-primary {
-  background-color: #ffffff;
-  color: #4c1d95;
-  padding: 12px 30px;
-  border: none;
-  border-radius: 50px;
-  /* Lưu ý là 50px chứ không phải 50% nhé */
-  font-size: 1rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-
-  /* Thêm 3 dòng này để nút không bị bóp méo */
-  white-space: nowrap;
-  width: max-content;
-  min-width: 200px;
-}
-
-/* Dán vào cuối file header.css để đè lên mọi cấu hình cũ */
+/* Ép cấu hình header đè lên cấu hình cũ */
 header,
 .header,
 .header-wrapper,
@@ -276,20 +279,10 @@ header,
   min-width: 100vw !important;
   margin: 0 !important;
   padding: 0 40px !important;
-  /* Tạo khoảng trống 2 bên cho logo và chữ không bị dính sát mép màn hình */
   box-sizing: border-box !important;
 }
 
-/* Đảm bảo khung chứa ảnh có position relative để lớp phủ căn chỉnh theo nó */
-.product-image-container {
-  width: 100%;
-  height: 280px;
-  overflow: hidden;
-  position: relative;
-  background-color: #f9fafb;
-}
-
-/* Lớp phủ "tàng hình" ban đầu */
+/* Lớp phủ "tàng hình" ban đầu trên ảnh sản phẩm */
 .product-overlay {
   position: absolute;
   top: 0;
@@ -297,13 +290,10 @@ header,
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
-  /* Làm tối và mờ ảnh đi 40% */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
-
-  /* Ban đầu ẩn đi */
   opacity: 0;
   transition: opacity 0.3s ease;
   cursor: pointer;
@@ -321,30 +311,24 @@ header,
   border-radius: 4px;
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(4px);
-  /* Hiệu ứng kính mờ nhẹ cho chữ */
   transform: translateY(10px);
-  /* Hơi dịch xuống dưới một chút */
   transition: transform 0.3s ease;
 }
 
-/* --- HIỆU ỨNG KHI DI CHUỘT VÀO CARD SẢN PHẨM --- */
-
-/* 1. Hiện lớp phủ làm mờ ảnh */
+/* HIỆU ỨNG KHI DI CHUỘT VÀO CARD SẢN PHẨM */
 .product-card:hover .product-overlay {
   opacity: 1;
 }
 
-/* 2. Đẩy chữ Xem chi tiết trượt nhẹ lên vị trí trung tâm */
 .product-card:hover .view-detail-text {
   transform: translateY(0);
 }
 
-/* 3. Phối hợp với hiệu ứng phóng to ảnh cũ của bạn (nếu muốn giữ lại) */
 .product-card:hover .product-image-container img {
   transform: scale(1.08);
 }
 
-/* Khung chứa nút để căn giữa */
+/* Khung chứa nút xem thêm để căn giữa */
 .load-more-container {
   display: flex;
   justify-content: center;
@@ -357,13 +341,11 @@ header,
 .btn-load-more {
   background-color: transparent;
   color: #6d28d9;
-  /* Màu tím đồng điệu thương hiệu */
   border: 2px solid #6d28d9;
   padding: 12px 40px;
   font-size: 1rem;
   font-weight: 700;
   border-radius: 50px;
-  /* Bo viền hình viên thuốc giống nút trên Banner */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -372,7 +354,6 @@ header,
   box-shadow: 0 4px 10px rgba(109, 40, 217, 0.05);
 }
 
-/* Hiệu ứng khi di chuột vào nút Xem thêm */
 .btn-load-more:hover {
   background-color: #6d28d9;
   color: #ffffff;
@@ -385,7 +366,64 @@ header,
   transition: transform 0.3s ease;
 }
 
-/* Mũi tên nhấp nháy đi xuống nhẹ khi hover */
 .btn-load-more:hover .arrow-down {
   transform: translateY(3px);
+}
+
+/* ==========================================
+   RESPONSIVE (MEDIA QUERIES) CHO TRANG CHỦ
+   ========================================== */
+
+/* --- GIAO DIỆN TABLET VÀ LAPTOP NHỎ (Dưới 1024px) --- */
+@media (max-width: 1024px) {
+  .hero-banner { min-height: 50vh; }
+  .hero-banner h1 { font-size: 3rem; }
+  .hero-banner p { font-size: 1.1rem; }
+  
+  /* Giảm nhẹ chiều rộng cột để trên Tablet hiển thị được 3-4 sản phẩm */
+  .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+}
+
+/* --- GIAO DIỆN ĐIỆN THOẠI (Dưới 768px) --- */
+@media (max-width: 768px) {
+  /* 1. Tối ưu Banner: Thu nhỏ chữ và nút bấm */
+  .hero-banner { 
+    min-height: 40vh; 
+    padding: 80px 15px; 
+  }
+  .hero-banner h1 { font-size: 2.2rem; margin-bottom: 12px; }
+  .hero-banner p { font-size: 1rem; margin-bottom: 20px; line-height: 1.4; }
+  .btn-primary { padding: 12px 30px; font-size: 0.95rem; min-width: 160px; }
+
+  /* 2. Giảm khoảng cách thừa */
+  .container { margin-top: 35px; }
+  .section-title { font-size: 1.5rem; margin-bottom: 25px; }
+  .load-more-container { margin-top: 30px; }
+
+  /* 3. Ép lưới sản phẩm hiển thị 2 CỘT chuẩn App E-commerce */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Ép buộc 2 cột bằng nhau */
+    gap: 15px; /* Thu nhỏ khoảng cách giữa 2 thẻ */
+  }
+
+  /* 4. Thu nhỏ tỷ lệ Thẻ sản phẩm cho vừa 2 cột */
+  .product-image-container { height: 180px; }
+  .product-info { padding: 12px; }
+  .product-name { font-size: 0.9rem; margin-bottom: 8px; }
+  .product-price { font-size: 1rem; }
+  
+  .btn-cart { width: 34px; height: 34px; }
+  .btn-cart svg { width: 16px; height: 16px; }
+
+  /* Trên mobile không có chuột để hover, nên tắt lớp phủ mờ có chữ "Xem chi tiết" đi để không chạm nhầm */
+  .product-overlay { display: none !important; }
+}
+
+/* --- GIAO DIỆN ĐIỆN THOẠI RẤT NHỎ (Dưới 480px) --- */
+@media (max-width: 480px) {
+  .hero-banner h1 { font-size: 1.8rem; }
+  .product-grid { gap: 10px; }
+  .product-image-container { height: 150px; }
+  .badge { font-size: 0.65rem; padding: 4px 8px; top: 8px; left: 8px; }
 }

@@ -25,10 +25,14 @@ const Home = () => {
 
   return (
     <div className="home-page-container">
+      {/* KHU VỰC BANNER ĐÃ ĐƯỢC TÙY CHỈNH NỔI BẬT HƠN */}
       <div className="hero-banner">
-        <h1>VELORA <span className="highlight">STORE</span></h1>
-        <p>Khám phá bộ sưu tập thời trang thể thao cao cấp. Nâng tầm phong cách và hiệu suất tập luyện của bạn ngay hôm nay.</p>
-        <button className="btn-primary">Mua ngay</button>
+        <div className="hero-overlay"></div>
+        <div className="hero-content">
+          <h1>VELORA <span className="highlight">STORE</span></h1>
+          <p>Khám phá bộ sưu tập thời trang thể thao cao cấp. Nâng tầm phong cách và hiệu suất tập luyện của bạn ngay hôm nay.</p>
+          <button className="btn-primary">Mua ngay</button>
+        </div>
       </div>
 
       <div className="container">

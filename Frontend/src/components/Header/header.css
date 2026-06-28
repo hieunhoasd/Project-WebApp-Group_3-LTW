@@ -310,3 +310,137 @@ a.action-icon {
 .action-icon:hover {
     color: #007bff;
 }
+
+/* ==========================================
+    RESPONSIVE (MEDIA QUERIES) CHO HEADER
+   ========================================== */
+
+/* Mặc định ẩn nút Hamburger (Chỉ hiện trên điện thoại) */
+.mobile-menu-toggle {
+    display: none;
+    color: #ffffff;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+/* --- GIAO DIỆN TABLET VÀ LAPTOP NHỎ (Dưới 1024px) --- */
+@media (max-width: 1024px) {
+    .header-container {
+        padding: 15px 25px !important;
+    }
+    .nav-links {
+        gap: 15px; /* Giảm khoảng cách giữa các chữ */
+    }
+    .search-box input {
+        width: 130px; /* Thu ngắn thanh tìm kiếm */
+    }
+    .search-box input:focus {
+        width: 160px;
+    }
+}
+
+/* --- GIAO DIỆN ĐIỆN THOẠI (Dưới 768px) --- */
+@media (max-width: 768px) {
+    .header-container {
+        padding: 12px 15px !important;
+    }
+
+    /* 1. Hiện nút bấm Menu */
+    .mobile-menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+    }
+
+    /* 2. Biến Menu Ngang thành Sidebar Trượt từ trái sang */
+    .nav-links {
+        position: fixed;
+        top: 71px; /* Chiều cao xấp xỉ của Header */
+        left: -100%; /* Giấu ra khỏi màn hình bên trái */
+        flex-direction: column;
+        background-color: #030712;
+        width: 100%;
+        height: calc(100vh - 71px);
+        padding: 30px 20px;
+        align-items: flex-start;
+        gap: 25px;
+        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        z-index: 999;
+    }
+
+    /* Khi state isMobileMenuOpen = true, thêm class này để trượt menu vào */
+    .nav-links.mobile-active {
+        left: 0;
+    }
+
+    .nav-links a {
+        font-size: 1.1rem;
+    }
+
+    /* 3. Chỉnh Dropdown menu SẢN PHẨM để hiển thị dạng xổ dọc thay vì bay lơ lửng */
+    .dropdown-menu {
+        position: relative;
+        top: 0;
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
+        padding-left: 20px; /* Thụt lề cho menu con */
+        display: none; /* Ẩn mặc định để gọn gàng */
+        margin-top: 10px;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block; /* Hiện ra khi hover vào chữ Sản phẩm */
+    }
+
+    /* 4. Tối ưu khu vực chức năng bên phải */
+    .header-actions {
+        gap: 10px;
+    }
+
+    /* Thu gọn thanh tìm kiếm thành hình tròn chứa Icon, ẩn text input */
+    .search-box {
+        padding: 8px;
+        background-color: transparent;
+        border: none;
+    }
+    
+    .search-box input {
+        display: none;
+    }
+    
+    .search-btn {
+        background-color: rgba(255, 255, 255, 0.08);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Ẩn phần chữ chào mừng User để không bị chật */
+    .text-hide-mobile {
+        display: none !important;
+    }
+}
+
+/* --- GIAO DIỆN ĐIỆN THOẠI RẤT NHỎ (Dưới 480px, vd: iPhone SE) --- */
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1.6rem;
+    }
+    .logo-subtitle {
+        font-size: 0.55rem;
+    }
+    /* Thu nhỏ các nút icon lại một chút */
+    .action-icon, .mobile-menu-toggle, .search-btn {
+        width: 36px;
+        height: 36px;
+    }
+}

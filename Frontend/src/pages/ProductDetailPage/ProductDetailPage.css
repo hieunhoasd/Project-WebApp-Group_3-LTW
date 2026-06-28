@@ -256,3 +256,96 @@
         transform: translateY(0);
     }
 }
+
+/* ==============================================================
+   RESPONSIVE (MEDIA QUERIES) CHO TRANG CHI TIẾT SẢN PHẨM
+   ============================================================== */
+
+/* --- GIAO DIỆN TABLET VÀ LAPTOP NHỎ (Dưới 1024px) --- */
+@media (max-width: 1024px) {
+    .detail-layout {
+        gap: 30px;
+        padding: 30px;
+    }
+    .detail-title {
+        font-size: 1.8rem;
+    }
+    .detail-image-section img {
+        max-height: 400px;
+    }
+}
+
+/* --- GIAO DIỆN ĐIỆN THOẠI (Dưới 768px) --- */
+@media (max-width: 768px) {
+    .product-detail-container {
+        margin-top: 100px; /* Giảm margin top vì Header mobile mỏng hơn */
+        padding: 0 15px;
+    }
+
+    .detail-layout {
+        /* Quan trọng nhất: Chuyển từ 2 cột sang 1 cột (Ảnh trên, chữ dưới) */
+        grid-template-columns: 1fr;
+        gap: 25px;
+        padding: 20px;
+    }
+
+    .detail-image-section img {
+        max-height: 350px; /* Giới hạn chiều cao ảnh để không chiếm hết màn hình */
+    }
+
+    .detail-category {
+        font-size: 0.75rem;
+    }
+
+    .detail-title {
+        font-size: 1.6rem;
+        margin-top: 5px;
+    }
+
+    .detail-price {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .btn-add-to-cart {
+        padding: 14px 20px;
+        font-size: 0.95rem;
+    }
+
+    /* Tối ưu khu vực bình luận cho điện thoại */
+    .product-reviews-section {
+        margin-top: 40px;
+        padding: 20px 15px;
+    }
+
+    .product-reviews-section h2 {
+        font-size: 1.3rem;
+    }
+
+    .review-form {
+        padding: 15px;
+    }
+
+    .review-form-group textarea {
+        min-height: 80px; /* Thu nhỏ khung nhập bình luận */
+    }
+}
+
+/* --- GIAO DIỆN ĐIỆN THOẠI RẤT NHỎ (Dưới 480px) --- */
+@media (max-width: 480px) {
+    .product-detail-container {
+        margin-top: 90px;
+    }
+    .detail-layout {
+        padding: 15px;
+    }
+    .detail-title {
+        font-size: 1.4rem;
+    }
+    .detail-image-section img {
+        max-height: 280px;
+    }
+    .comment-author {
+        font-size: 1rem;
+    }
+}
