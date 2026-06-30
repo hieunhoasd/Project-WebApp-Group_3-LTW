@@ -4,6 +4,7 @@ import './header.css';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from '../../context/axios';
 
+
 // 🌟 Import thêm FiMenu và FiX để làm nút bấm cho giao diện Mobile
 import { FiSearch, FiShoppingCart, FiUser, FiLogOut, FiChevronDown, FiMenu, FiX } from 'react-icons/fi';
 
@@ -119,10 +120,11 @@ const Header = () => {
             </div>
           </>
         ) : (
-          <div className="user-greeting text-hide-mobile">
-            <Link to="/login" className="login-link-btn" style={{ fontWeight: 'bold' }}>Đăng nhập</Link>
-          </div>
+          <Link to="/login" className="action-icon login-btn" title="Đăng nhập">
+            <FiUser size={22} />
+          </Link>
         )}
+        
 
         {/* 🌟 NÚT HAMBURGER (Chỉ hiện ra khi ở giao diện Mobile) */}
         <div className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
