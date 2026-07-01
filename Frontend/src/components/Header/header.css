@@ -302,13 +302,30 @@ a.action-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #333;
-    /* Đổi màu icon tùy thích */
-    transition: color 0.3s ease;
+    
+    color: #9ca3af; 
+    
+    /* Nền tròn mờ nhẹ */
+    background-color: rgba(255, 255, 255, 0.05);
+    
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .action-icon:hover {
-    color: #007bff;
+    /* Khi hover: Chuyển sang trắng sáng và sáng lên */
+    color: #ffffff;
+    background-color: rgba(192, 132, 252, 0.2); /* Tím nhạt cực mờ */
+    border-color: rgba(192, 132, 252, 0.5); /* Viền tím nhẹ */
+    
+    /* Hiệu ứng nổi bật */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(192, 132, 252, 0.2);
 }
 
 /* ==========================================

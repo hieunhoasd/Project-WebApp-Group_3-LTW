@@ -59,7 +59,7 @@ const Header = () => {
     <header className="header-container">
       {/* 1. Phần Logo & Slogan */}
       <Link to="/" className="header-logo-section" onClick={closeMobileMenu}>
-        <h1 className="logo">VELORA<span className="dot">.</span></h1>
+        <h1 className="logo">VELORA</h1>
         <span className="logo-subtitle">SPORT • STYLE • YOU</span>
       </Link>
 

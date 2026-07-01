@@ -1,65 +1,46 @@
-import { Link } from "react-router-dom";
-import "./footer.css";
-
-// Import các icon nét thanh từ bộ Feather Icons
+import React from 'react';
 import { FiFacebook, FiInstagram, FiLinkedin } from 'react-icons/fi';
+import "./footer.css";
 
 function Footer() {
   return (
     <footer className="footer">
       <div className="footer-container">
-
-        {/* CỘT 1: CHĂM SÓC KHÁCH HÀNG */}
+        
+        {/* Cột 1: Thông tin */}
         <div className="footer-column">
-          <h3 className="footer_heading">CHĂM SÓC KHÁCH HÀNG</h3>
-          <ul className="footer_list">
-            <li><a href="javascript:void(0)" className="footer-item__link">Trung Tâm Trợ Giúp</a></li>
-            <li><a href="javascript:void(0)" className="footer-item__link">Velora Store</a></li>
-            <li><a href="javascript:void(0)" className="footer-item__link">Hướng dẫn mua hàng</a></li>
-          </ul>
+          <h3 className="footer_heading">Velora Store</h3>
+          <p className="footer-desc">Mang đến phong cách thể thao tự tin và thoải mái nhất mỗi ngày.</p>
+          <div className="footer-contact">
+            <p><strong>Địa chỉ:</strong> ĐH Giao Thông Vận Tải TP.HCM</p>
+            <p><strong>Hotline:</strong> 0352 456 789</p>
+          </div>
         </div>
 
-        {/* CỘT 2: THÔNG TIN CỬA HÀNG */}
-        <div className="footer-column" id="thong-tin-cua-hang">
-          <h3 className="footer_heading">THÔNG TIN CỬA HÀNG</h3>
-          <ul className="footer_list">
-            <li>
-              <a href="javascript:void(0)" className="footer-item__link">
-                Địa chỉ: Trường Đại Học Giao Thông Vận Tải TP.HCM
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)" className="footer-item__link">
-                Số điện thoại: 0352.456.789
-              </a>
-            </li>
-            <li><a href="javascript:void(0)" className="footer-item__link">Điều khoản</a></li>
-          </ul>
+        {/* Cột 2: Đăng ký */}
+        <div className="footer-column">
+          <h3 className="footer_heading">Đăng ký bản tin</h3>
+          <form className="newsletter-form">
+            <input type="email" placeholder="Email của bạn..." required />
+            <button type="submit">Đăng ký</button>
+          </form>
+          <label className="checkbox-label">
+            <input type="checkbox" /> Tôi đồng ý nhận bản tin.
+          </label>
         </div>
 
-        {/* CỘT 3: THEO DÕI (Đã tích hợp icon mới) */}
+        {/* Cột 3: Theo dõi */}
         <div className="footer-column">
-          <h3 className="footer_heading">THEO DÕI</h3>
-          <ul className="footer_list">
-            <li>
-              <a href="javascript:void(0)" className="footer-item__link">
-                <FiFacebook size={20} className="social-icon" /> Facebook
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)" className="footer-item__link">
-                <FiInstagram size={20} className="social-icon" /> Instagram
-              </a>
-            </li>
-            <li>
-              <a href="javascript:void(0)" className="footer-item__link">
-                <FiLinkedin size={20} className="social-icon" /> LinkedIn
-              </a>
-            </li>
-          </ul>
+          <h3 className="footer_heading">Theo dõi</h3>
+          <div className="social-links">
+            <a href="#" className="social-item"><FiFacebook /> Facebook</a>
+            <a href="#" className="social-item"><FiInstagram /> Instagram</a>
+            <a href="#" className="social-item"><FiLinkedin /> LinkedIn</a>
+          </div>
         </div>
 
       </div>
+      <div className="footer-bottom">© 2026 Velora Store. Bản quyền đã được bảo lưu.</div>
     </footer>
   );
 }
