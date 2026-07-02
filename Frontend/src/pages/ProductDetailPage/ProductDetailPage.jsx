@@ -8,6 +8,7 @@ import './ProductDetailPage.css';
 
 const ProductDetailPage = () => {
     const { id } = useParams();
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
@@ -30,13 +31,13 @@ const ProductDetailPage = () => {
 
     useEffect(() => {
         fetchProductData();
-    }, [id]);
+    }, [id, apiBaseUrl]);
 
     // Gộp chung hàm gọi API để lấy cả chi tiết sản phẩm + bình luận
     const fetchProductData = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`http://127.0.0.1:8000/api/products/${id}`);
+            const res = await fetch(`${apiBaseUrl}/products/${id}`);
             const resData = await res.json();
 
             if (resData.code === 200) {
@@ -73,7 +74,7 @@ const ProductDetailPage = () => {
         }
 
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/comments`, {
+            const response = await fetch(`${apiBaseUrl}/comments`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

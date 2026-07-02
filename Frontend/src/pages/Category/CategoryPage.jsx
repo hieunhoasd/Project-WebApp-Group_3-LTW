@@ -6,6 +6,7 @@ import ProductCard from '../../components/ProductCard';
 
 const CategoryPage = () => {
     const { categoryId } = useParams();
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const [products, setProducts] = useState([]);
     const [categoryName, setCategoryName] = useState('Danh mục sản phẩm');
     const [loading, setLoading] = useState(true);
@@ -17,7 +18,7 @@ const CategoryPage = () => {
         const fetchCategoryProducts = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`http://127.0.0.1:8000/api/categories/${categoryId}/products`);
+                const response = await fetch(`${apiBaseUrl}/categories/${categoryId}/products`);
                 const result = await response.json();
                 if (result.code === 200) {
                     setProducts(result.data);
@@ -34,7 +35,7 @@ const CategoryPage = () => {
 
         // 🌟 2. Reset số lượng hiển thị về lại 8 khi người dùng chuyển danh mục
         setVisibleCount(8);
-    }, [categoryId]);
+    }, [categoryId, apiBaseUrl]);
 
     // 🌟 3. Hàm xử lý khi click vào nút "Xem thêm" (Tăng thêm 4 sản phẩm)
     const handleLoadMore = () => {

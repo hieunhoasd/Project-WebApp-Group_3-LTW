@@ -10,6 +10,7 @@ import { FiCreditCard, FiMapPin, FiTruck, FiLoader, FiCheckCircle, FiShoppingCar
 const CheckoutPage = () => {
     const { cartItems = [], clearCart } = useCart();
     const navigate = useNavigate();
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const [loading, setLoading] = useState(false);
 
     const storedUser = JSON.parse(localStorage.getItem('user')) || {};
@@ -74,7 +75,7 @@ const CheckoutPage = () => {
                 }))
             };
 
-            const response = await fetch('http://127.0.0.1:8000/api/orders', {
+            const response = await fetch(`${apiBaseUrl}/orders`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

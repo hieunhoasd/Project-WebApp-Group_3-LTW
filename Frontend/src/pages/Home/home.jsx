@@ -3,12 +3,13 @@ import ProductCard from '../../components/ProductCard';
 import './home.css';
 
 const Home = () => {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   const [products, setProducts] = useState([]);
   // State quản lý số lượng sản phẩm đang hiển thị (mặc định ban đầu là 20)
   const [visibleCount, setVisibleCount] = useState(20);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/products')
+    fetch(`${apiBaseUrl}/products`)
       .then(res => res.json())
       .then(resData => {
         if (resData.code === 200) {
@@ -16,7 +17,7 @@ const Home = () => {
         }
       })
       .catch(err => console.error("Lỗi lấy data:", err));
-  }, []);
+  }, [apiBaseUrl]);
 
   // Hàm xử lý khi click vào nút "Xem thêm"
   const handleLoadMore = () => {
