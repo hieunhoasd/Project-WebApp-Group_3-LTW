@@ -1,0 +1,166 @@
+/* ================= TRANG DANH MỤC SẢN PHẨM ================= */
+.category-page-container {
+    max-width: 1200px;
+    margin: 40px auto 80px auto;
+    padding: 0 20px;
+}
+
+/* ================= 1. HEADER DANH MỤC ================= */
+.category-hero {
+    text-align: center;
+    padding: 55px 20px; /* Căn chỉnh lại khoảng cách trên dưới cho đều khi không còn breadcrumb */
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); 
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 50px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02); 
+}
+
+/* Đường line nhấn nhá trên cùng */
+.category-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #111827, #4b5563, #111827); 
+}
+
+.category-title {
+    font-size: 2.8rem;
+    color: #111827;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 0 0 15px 0;
+}
+
+.category-subtitle {
+    max-width: 650px;
+    margin: 0 auto;
+    color: #475569;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+/* ================= 2. TIÊU ĐỀ SECTION ================= */
+.category-section {
+    margin-bottom: 60px;
+}
+
+.section-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 25px;
+}
+
+.section-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+/* ================= 3. HIỆU ỨNG LƯỚT NGANG VÀ SLIDER ================= */
+.trending-slider-wrapper {
+    position: relative; 
+    width: 100%;
+}
+
+.horizontal-scroll-track {
+    display: flex;
+    gap: 24px; 
+    overflow-x: auto;
+    padding: 10px 5px 20px 5px; 
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.horizontal-scroll-track::-webkit-scrollbar {
+    display: none;
+}
+
+.scroll-item {
+    scroll-snap-align: start;
+    flex: 0 0 calc(25% - 18px); 
+    min-width: 260px;
+}
+
+/* 2 NÚT BẤM MŨI TÊN */
+.slider-btn {
+    position: absolute;
+    top: 35%; 
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    background-color: #111827; 
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.slider-btn:hover {
+    background-color: #374151;
+    transform: translateY(-50%) scale(1.05); 
+}
+
+.prev-btn { left: -22px; }
+.next-btn { right: -22px; }
+
+/* ================= 4. KHU VỰC TẤT CẢ SẢN PHẨM ================= */
+.divider {
+    border: none;
+    height: 1px;
+    background-color: #e5e7eb;
+    margin: 60px 0;
+}
+
+.category-grid-large {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 30px;
+}
+
+/* Bộ lọc cơ bản */
+.sort-select {
+    padding: 8px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: white;
+    color: #374151;
+    font-size: 0.9rem;
+    cursor: pointer;
+    outline: none;
+}
+.sort-select:hover { border-color: #111827; }
+
+/* ================= 5. RESPONSIVE ================= */
+@media (max-width: 1024px) {
+    .category-grid-large { grid-template-columns: repeat(2, 1fr); }
+    .scroll-item { flex: 0 0 calc(33.333% - 14px); }
+}
+
+@media (max-width: 768px) {
+    .category-hero { padding: 40px 15px; }
+    .category-title { font-size: 2rem; }
+
+    .section-header-flex { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .category-grid-large { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    
+    .slider-btn { display: none; }
+    .scroll-item { flex: 0 0 75%; min-width: 240px; } 
+}

@@ -47,7 +47,7 @@ const Home = () => {
         {products.length > visibleCount && (
           <div className="load-more-container">
             <button className="btn-load-more" onClick={handleLoadMore}>
-              Xem thêm sản phẩm
+              Xem tất cả sản phẩm nổi bật
               <span className="arrow-down"> ↓</span>
             </button>
           </div>

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import Header from '../../components/Header/header';
 import Footer from '../../components/Footer/footer';
 import ProductCard from '../../components/ProductCard';
+import './CategoryPage.css';
 
 const CategoryPage = () => {
     const { categoryId } = useParams();
@@ -11,8 +12,8 @@ const CategoryPage = () => {
     const [categoryName, setCategoryName] = useState('Danh mục sản phẩm');
     const [loading, setLoading] = useState(true);
 
-    // 🌟 1. Tạo state quản lý số lượng sản phẩm hiển thị (Mặc định ban đầu hiện 8 cái)
-    const [visibleCount, setVisibleCount] = useState(8);
+    const [visibleCount, setVisibleCount] = useState(9);
+    const scrollRef = useRef(null);
 
     useEffect(() => {
         const fetchCategoryProducts = async () => {
@@ -32,22 +33,32 @@ const CategoryPage = () => {
         };
 
         fetchCategoryProducts();
-
-        // 🌟 2. Reset số lượng hiển thị về lại 8 khi người dùng chuyển danh mục
-        setVisibleCount(8);
+        setVisibleCount(9);
     }, [categoryId, apiBaseUrl]);
 
-    // 🌟 3. Hàm xử lý khi click vào nút "Xem thêm" (Tăng thêm 4 sản phẩm)
     const handleLoadMore = () => {
-        setVisibleCount((prevCount) => prevCount + 4);
+        setVisibleCount((prevCount) => prevCount + 6);
+    };
+
+    const scroll = (direction) => {
+        if (scrollRef.current) {
+            const { current } = scrollRef;
+            const scrollAmount = 300; 
+            
+            if (direction === 'left') {
+                current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            } else {
+                current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
+        }
     };
 
     if (loading) {
         return (
             <>
                 <Header />
-                <div style={{ textAlign: 'center', padding: '150px 50px', color: '#2b3674', fontWeight: 'bold', minHeight: '50vh' }}>
-                    Đang tải sản phẩm...
+                <div style={{ textAlign: 'center', padding: '150px 50px', color: '#111827', fontWeight: 'bold', minHeight: '50vh' }}>
+                    <div className="loading-spinner">Đang tải bộ sưu tập...</div>
                 </div>
                 <Footer />
             </>
@@ -58,54 +69,83 @@ const CategoryPage = () => {
         <>
             <Header />
 
-            <div style={{ maxWidth: '1200px', margin: '40px auto', padding: '0 20px', fontFamily: 'Arial, sans-serif', minHeight: '60vh' }}>
-                <h2 style={{ color: '#2b3674', borderBottom: '2px solid #e0e5f2', paddingBottom: '15px', marginBottom: '30px', fontWeight: 'bold' }}>
-                    Danh mục: {categoryName}
-                </h2>
+            <div className="category-page-container">
+                {/* 🌟 HEADER DANH MỤC (Đã gỡ Breadcrumb thừa, giữ form nền xịn) */}
+                <div className="category-hero">
+                    <h1 className="category-title">{categoryName}</h1>
+                    <p className="category-subtitle">
+                        Khám phá bộ sưu tập mới nhất với form dáng chuẩn mực, chất liệu cao cấp mang lại sự thoải mái tuyệt đối cho mọi hoạt động trong ngày.
+                    </p>
+                </div>
 
                 {products.length === 0 ? (
-                    <div style={{ textAlign: 'center', padding: '40px', color: '#a3aed1', fontSize: '16px' }}>
-                        Hiện tại danh mục này chưa có sản phẩm nào hiển thị.
+                    <div style={{ textAlign: 'center', padding: '40px', color: '#6b7280', fontSize: '16px', minHeight: '30vh' }}>
+                        Hiện tại danh mục này đang cập nhật sản phẩm. Vui lòng quay lại sau nhé!
                     </div>
                 ) : (
                     <>
-                        {/* 🌟 4. Sử dụng .slice(0, visibleCount) để ép giới hạn render sản phẩm */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '25px' }}>
-                            {products.slice(0, visibleCount).map((product) => (
-                                <ProductCard key={product.id} product={product} />
-                            ))}
-                        </div>
+                        {/* KHU VỰC 1: LƯỚT NGANG TRENDING */}
+                        {products.length >= 4 && (
+                            <div className="category-section">
+                                <div className="section-header-flex">
+                                    <h2 className="section-heading">Đang thịnh hành</h2>
+                                </div>
+                                
+                                <div className="trending-slider-wrapper">
+                                    <button className="slider-btn prev-btn" onClick={() => scroll('left')}>
+                                        <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"></path>
+                                        </svg>
+                                    </button>
 
-                        {/* 🌟 5. Chỉ hiển thị nút "Xem thêm" nếu tổng số sản phẩm lớn hơn số lượng đang hiển thị */}
-                        {visibleCount < products.length && (
-                            <div style={{ textAlign: 'center', marginTop: '40px' }}>
-                                <button
-                                    onClick={handleLoadMore}
-                                    style={{
-                                        padding: '12px 30px',
-                                        backgroundColor: '#fff',
-                                        color: '#4318ff',
-                                        border: '2px solid #4318ff',
-                                        borderRadius: '10px',
-                                        fontWeight: 'bold',
-                                        cursor: 'pointer',
-                                        fontSize: '15px',
-                                        transition: 'all 0.3s ease',
-                                        boxShadow: '0 4px 12px rgba(67, 24, 255, 0.05)'
-                                    }}
-                                    onMouseOver={(e) => {
-                                        e.target.style.backgroundColor = '#4318ff';
-                                        e.target.style.color = '#fff';
-                                    }}
-                                    onMouseOut={(e) => {
-                                        e.target.style.backgroundColor = '#fff';
-                                        e.target.style.color = '#4318ff';
-                                    }}
-                                >
-                                    Xem thêm sản phẩm ↓
-                                </button>
+                                    <div className="horizontal-scroll-track" ref={scrollRef}>
+                                        {products.slice(0, 12).map(product => (
+                                            <div className="scroll-item" key={`trending-${product.id}`}>
+                                                <ProductCard product={product} />
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <button className="slider-btn next-btn" onClick={() => scroll('right')}>
+                                        <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         )}
+
+                        <hr className="divider" />
+
+                        {/* KHU VỰC 2: TẤT CẢ SẢN PHẨM */}
+                        <div className="category-section">
+                            <div className="section-header-flex">
+                                <h2 className="section-heading">Tất cả sản phẩm</h2>
+                                <div className="filter-sort">
+                                    <select className="sort-select">
+                                        <option>Mới nhất</option>
+                                        <option>Bán chạy nhất</option>
+                                        <option>Giá: Thấp đến Cao</option>
+                                        <option>Giá: Cao đến Thấp</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="category-grid-large">
+                                {products.slice(0, visibleCount).map((product) => (
+                                    <ProductCard key={product.id} product={product} />
+                                ))}
+                            </div>
+
+                            {visibleCount < products.length && (
+                                <div className="load-more-container">
+                                    <button className="btn-load-more" onClick={handleLoadMore}>
+                                        Xem thêm sản phẩm
+                                        <span className="arrow-down">↓</span>
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </>
                 )}
             </div>
